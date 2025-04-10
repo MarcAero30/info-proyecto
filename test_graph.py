@@ -50,4 +50,4 @@ print (n.name) # La respuesta debe ser B
 SaveGraph(G,"graph")
 H = LoadGraph("graph")
 Plot(H)
-PlotNode(H, "C")
+PlotNode(H, "Cafdgda")
