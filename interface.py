@@ -27,7 +27,7 @@ def select_file():
     # Print the selected file path
     if file_path:
         print(f"Selected file: {os.path.basename(file_path)}")
-        Plot(LoadGraph(os.path.basename(file_path)))
+        Plot(LoadGraph(os.path.basename(file_path)), ventana)
     else:
         print("No file selected")
 
