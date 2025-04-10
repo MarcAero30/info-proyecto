@@ -1,11 +1,15 @@
 from node import *
 from segment import *
 import matplotlib.pyplot as plt
+from functools import partial
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import tkinter as tk
 
 class Graph:
     def __init__ (self):
         self.nodes = []
         self.segments = []
+        self.selected_node = None
 #Clase graph con una lista de nodos y segmentos
 
 def AddNode(g,n):
@@ -55,28 +59,49 @@ def GetClosest (g, x,y):
 #Crea un nodo (sin añadirlo a la lista) con nombre "punto" y la posicion que se quiere comparar
 #Recorre la lista de nodos, comprobando si la distancia del punto al cercano es mayor o menor a la del punto al nodo a comprobar y si es mayor, el cercano pasa a ser ese nuevo punto
 
-def busca_encuentra(n_nodo):
-    jj=0
-    busca_yno_encuentra=False
-    while jj < len (g.nodes) and not busca_yno_encuentra:
-        if n_nodo = g.nodes[jj]:
-            x=g.nodes[jj+1]
-            y=g.nodes[jj+2]
-            busca_yno_encuentra=True
-    else:
-        jj=jj+1
-def Plot(g):
+def on_click(g, event):
+    # Get the coordinates of the click
+    x, y = event.xdata, event.ydata
+    if x is not None and y is not None:  # Check if the click is within the plot
+        print(f"Clicked at: ({x}, {y})")
+        print(GetClosest(g, x, y).name)
+        g.selected_node = GetClosest(g, x, y)
+
+
+
+def Plot(g, root):  # root is the Tkinter window passed from the interface.py
+    fig, ax = plt.subplots()  # Create figure and axis
+
+    # Plot nodes
     for i in g.nodes:
-        plt.plot(i.x,i.y,"o",color = "red",markersize=4)
-        plt.text(i.x+0.5,i.y+0.5,str(i.name),color='green', fontsize=6, weight='bold')
+        ax.plot(i.x, i.y, "o", color="red", markersize=4)
+        ax.text(i.x + 0.5, i.y + 0.5, str(i.name), color='green', fontsize=6, weight='bold')
+
+    # Plot segments
     for i in g.segments:
-        adj = (Distance(i.origin,i.destination)-0.6)/Distance(i.origin,i.destination)
-        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.5, head_length=0.6, fc='blue', ec='blue')
-        plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(Distance(i.origin,i.destination)//0.01/100),color='black', fontsize=6, weight='bold')
-    plt.axis([-5,25,-5,25])
-    plt.grid(color='red', linestyle='dashed', linewidth=0.5)
-    plt.title('Grafico con nodos y segmentos')
-    plt.show()
+        adj = (Distance(i.origin, i.destination) - 0.6) / Distance(i.origin, i.destination)
+        ax.arrow(i.origin.x, i.origin.y,
+                 (i.destination.x - i.origin.x) * adj,
+                 (i.destination.y - i.origin.y) * adj,
+                 head_width=0.5, head_length=0.6, fc='blue', ec='blue')
+        ax.text((i.origin.x + i.destination.x) / 2,
+                (i.origin.y + i.destination.y) / 2,
+                str(Distance(i.origin, i.destination) // 0.01 / 100),
+                color='black', fontsize=6, weight='bold')
+
+    # Set axis limits and appearance
+    ax.axis([-5, 25, -5, 25])
+    ax.grid(color='red', linestyle='dashed', linewidth=0.5)
+    ax.set_title('Grafico con nodos y segmentos')
+
+    # Connect the on_click function to the button press event
+    fig.canvas.mpl_connect('button_press_event', partial(on_click, g))
+
+    # Embed the plot in the Tkinter window
+    canvas = FigureCanvasTkAgg(fig, master=root)  # root is the Tkinter window
+    canvas.draw()
+    canvas.get_tk_widget().grid(row=6, column=3)  # Pack the widget to make it visible
+
 #muestra los nodos y su nombre arriba a la derecha
 #Muestra los segmentos como flechas y la longitud de estos en el centro
 
