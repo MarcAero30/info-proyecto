@@ -55,6 +55,16 @@ def GetClosest (g, x,y):
 #Crea un nodo (sin añadirlo a la lista) con nombre "punto" y la posicion que se quiere comparar
 #Recorre la lista de nodos, comprobando si la distancia del punto al cercano es mayor o menor a la del punto al nodo a comprobar y si es mayor, el cercano pasa a ser ese nuevo punto
 
+def busca_encuentra(n_nodo):
+    jj=0
+    busca_yno_encuentra=False
+    while jj < len (g.nodes) and not busca_yno_encuentra:
+        if n_nodo = g.nodes[jj]:
+            x=g.nodes[jj+1]
+            y=g.nodes[jj+2]
+            busca_yno_encuentra=True
+    else:
+        jj=jj+1
 def Plot(g):
     for i in g.nodes:
         plt.plot(i.x,i.y,"o",color = "red",markersize=4)
