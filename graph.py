@@ -146,3 +146,16 @@ def LoadGraph(filename):
     return g
 #Lee tres lineas, correspondientes a los tres parametros de nodes y añade el node, asi hasta encontrarse una linea en blanco, que significa que a partir de ahi estamos hablande de segmentos
 #Lee tres lineas, correspondientes a los tres parametros de segments y añade el segmento mediante la funcion Addsegment, lo que a su misma vez añade los vecinos y las distancias de los nodos y segmentos correspondientemente
+
+def Reachability(g,nodename):
+    i=0
+    found = False
+    while i <len(g.nodes):
+        if g.nodes[i].name==nodename:
+            found= True
+            i-=1
+        i+=1
+    if found:
+        reach =[]
+    else:
+        print("No se ha encontrado dicho nodo.")
