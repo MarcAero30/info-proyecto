@@ -153,9 +153,42 @@ def Reachability(g,nodename):
     while i <len(g.nodes):
         if g.nodes[i].name==nodename:
             found= True
-            i-=1
-        i+=1
+        i+=1       #Busca el nodo que queremos y lo añade a la lista de los nodos a los que llega
+    i-=1
     if found:
-        reach =[]
+        reach =[g.nodes[i]]
+        new = True
+        while new:
+            new = False
+            for nodo in reach:
+                for vecino in nodo.neighbors:
+                    if vecino not in reach:
+                        reach.append(vecino)
+                        new = True
+
+        return reach
+    #Pasa por la lista de los nodos a los que llega y añade los vecinos (los nodos a los que se puede llegar directamente) de los nodos de esta lista si no estan ya en ella.
+    #Si hace una pasada y no consigue añadir ningun nodo, habra añadido todos a los que se puede llegar y para
+
     else:
         print("No se ha encontrado dicho nodo.")
+
+def PlotReachability(g,reach):
+    for i in g.nodes: #Igual que en PlotNode
+        plt.plot(i.x,i.y,"o",color = "gray",markersize=4)
+        plt.text(i.x+0.5,i.y+0.5,str(i.name),color='black', fontsize=6, weight='bold')
+    for i in g.segments: #Igual que en Plot
+        adj = (Distance(i.origin,i.destination)-0.6)/Distance(i.origin,i.destination)
+        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.5, head_length=0.6, fc='gray', ec='gray')
+        plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(Distance(i.origin,i.destination)//0.01/100),color='black', fontsize=6, weight='bold')
+    for j in reach: #Similar a PlotNode pero con todos los elementos de la lista
+        plt.plot(j.x,j.y,"o",color = "green",markersize=4)
+        plt.text(j.x+0.5,j.y+0.5,j.name,color = "black", fontsize=6, weight='bold')
+        for i in j.neighbors:
+            adj = (Distance(i,j)-0.6)/Distance(i,j)
+            plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.5, head_length=0.6, fc='green', ec='green')
+            plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(Distance(i,j)//0.01/100),color='black', fontsize=6, weight='bold')
+    plt.axis([-5,25,-5,25])
+    plt.grid(color='red', linestyle='dashed', linewidth=0.5)
+    plt.title('Grafico del alcance de '+reach[0].name)
+    plt.show()
