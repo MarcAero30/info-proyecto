@@ -48,11 +48,9 @@ print (n.name) # La respuesta debe ser J
 n = GetClosest(G,8,19)
 print (n.name) # La respuesta debe ser B
 SaveGraph(G,"graph")
-H = LoadGraph("graph3")
-Plot(H)
-PlotNode(H, "C")
-
-
+H = LoadGraph("graph3.txt")
+#Plot(H)
+#PlotNode(H, "C")
 
 reach = Reachability(H,"A")
 PlotReachability(H,reach)

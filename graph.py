@@ -181,7 +181,7 @@ def PlotReachability(g,reach):
         adj = (Distance(i.origin,i.destination)-0.6)/Distance(i.origin,i.destination)
         plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.5, head_length=0.6, fc='gray', ec='gray')
         plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(Distance(i.origin,i.destination)//0.01/100),color='black', fontsize=6, weight='bold')
-    for j in reach: #Similar a PlotNode pero con todos los elementos de la lista
+    for j in reach: #Similar a PlotNode pero con todos los elementos de la lista que devuelve reach
         plt.plot(j.x,j.y,"o",color = "green",markersize=4)
         plt.text(j.x+0.5,j.y+0.5,j.name,color = "black", fontsize=6, weight='bold')
         for i in j.neighbors:
@@ -192,3 +192,5 @@ def PlotReachability(g,reach):
     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
     plt.title('Grafico del alcance de '+reach[0].name)
     plt.show()
+
+#def Shortest(g, origin, destination):
