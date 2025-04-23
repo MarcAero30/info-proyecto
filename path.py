@@ -10,8 +10,8 @@ class Path:
 def AddNodeToPath(path, node): #Como no sera una funcion que use el usuario, añadiremos siempre los nodos en el orden del camino y siempre con segmentos existentes
     path.nodes.append(node)
     if len(path.nodes)>1:
-        origen = path.nodes[len(path.nodes)-2]
-        destino = path.nodes[len(path.nodes)-1]
+        origen = path.nodes[-2]
+        destino = path.nodes[-1]
         path.segments.append(Segment(origen.name + destino.name,origen,destino)) #Añade el nodo y crea un segmento entre el anterior añadido y este
 
 def ContainsNode (path,node):
@@ -25,7 +25,13 @@ def ContainsNode (path,node):
         return True
     else:
         return False
-
+    
+def PathLength(path):
+    suma = 0
+    for i in path.segments:
+        suma+=i.cost
+    return suma
+    
 def CostToNode(path,node):
     if ContainsNode(path,node):
         length=0

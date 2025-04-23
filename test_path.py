@@ -9,6 +9,7 @@ AddNodeToPath(camino, G.nodes[3])
 print(ContainsNode(camino,G.nodes[2]))
 print(ContainsNode(camino,G.nodes[5]))
 
+print(PathLength(camino))
 print(CostToNode(camino,G.nodes[2]))
 
 PlotPath(G,camino)

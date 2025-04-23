@@ -54,3 +54,7 @@ H = LoadGraph("graph3.txt")
 
 reach = Reachability(H,"A")
 PlotReachability(H,reach)
+
+shortest = FindShortestPath(G.nodes[0],G.nodes[5])
+if shortest != None:
+    PlotPath(G,shortest)

@@ -1,5 +1,6 @@
 from node import *
 from segment import *
+from path import *
 import matplotlib.pyplot as plt
 
 class Graph:
@@ -193,4 +194,34 @@ def PlotReachability(g,reach):
     plt.title('Grafico del alcance de '+reach[0].name)
     plt.show()
 
-#def Shortest(g, origin, destination):
+def FindShortestPath(origin,destination): #Se ha seguido el algoritmo sugerido en atenea | se ha de dar el nodo de origen y destino directamente, no el nombre de estos como en otras funciones
+    paths = [Path()]
+    AddNodeToPath(paths[0],origin)
+    while len(paths)>0:
+        lowest = paths[0]
+        for i in paths:
+            if PathLength(i)+Distance(i.nodes[-1],destination)< PathLength(lowest)+Distance(lowest.nodes[-1],destination):
+                lowest=i
+        paths.remove(lowest) #Busca el nodo con la menor distancia estimada y se lo guarda aparte como lowest borrandolo de la lista
+
+        for i in lowest.nodes[-1].neighbors:
+            if i == destination:
+                AddNodeToPath(lowest,i) #Si ya ha llegado al destino
+                return lowest #Como lo devolvemos ya, la funcion acaba por lo que no hace falta comprobar en el while si ya se ha encontrado el camino
+            elif i not in lowest.nodes: #Si no esta ya en el camino, porque si no estariamos dando vueltas
+                iteraciones = 0
+                coste=PathLength(lowest)+Distance(lowest.nodes[-1],i)
+                for j in paths:
+                    if i in j.nodes:
+                        if coste>=PathLength(j):
+                            iteraciones+=1 #Si iteraciones=n, ha encontrado n caminos mejores ya existentes en la lista de caminos hasta el nodo que estamos comprobando
+                        else:
+                            paths.remove(j) #Si esta en uno de los caminos de la lista, pero este nuevo camino es mas corto, que elimine el que ya estaba (que era mas largo)
+                
+                if iteraciones<1:
+                    new = Path()
+                    new.nodes=list(lowest.nodes)
+                    new.segments=list(lowest.segments)
+                    AddNodeToPath(new, i)
+                    paths.append(new) #Si no hay camino mejor a dicho vecino, añade el camino hasta este a la lista de caminos
+    return None
