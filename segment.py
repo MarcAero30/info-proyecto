@@ -6,6 +6,7 @@ class Segment:
         self.destination = destination
         self.cost = Distance(origin,destination)
 #Clase segmento con nombre, un nodo de origen, un nodo de destino y el coste: la distancia entre ambos nodos.
+
 def ShowSegment(s):
     print("Nombre del segmento: ",s.name)
     print("Nodo origen:")

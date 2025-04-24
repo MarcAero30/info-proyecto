@@ -1,5 +1,6 @@
 from node import *
 from segment import *
+from path import *
 import matplotlib.pyplot as plt
 from functools import partial
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -181,3 +182,86 @@ def LoadGraph(filename):
     return g
 #Lee tres lineas, correspondientes a los tres parametros de nodes y añade el node, asi hasta encontrarse una linea en blanco, que significa que a partir de ahi estamos hablande de segmentos
 #Lee tres lineas, correspondientes a los tres parametros de segments y añade el segmento mediante la funcion Addsegment, lo que a su misma vez añade los vecinos y las distancias de los nodos y segmentos correspondientemente
+
+def Reachability(g,nodename):
+    for node in g.nodes:
+        if node.name==nodename:
+            origin=node
+            break
+        
+    i=0
+    found = False
+    while i <len(g.nodes):
+        if g.nodes[i].name==nodename:
+            found= True
+        i+=1       #Busca el nodo que queremos y lo añade a la lista de los nodos a los que llega
+    i-=1
+    if found:
+        reach =[origin]
+        new = True
+        while new:
+            new = False
+            for nodo in reach:
+                for vecino in nodo.neighbors:
+                    if vecino not in reach:
+                        reach.append(vecino)
+                        new = True
+
+        return reach
+    #Pasa por la lista de los nodos a los que llega y añade los vecinos (los nodos a los que se puede llegar directamente) de los nodos de esta lista si no estan ya en ella.
+    #Si hace una pasada y no consigue añadir ningun nodo, habra añadido todos a los que se puede llegar y para
+
+    else:
+        print("No se ha encontrado dicho nodo.")
+
+def PlotReachability(g,reach):
+    for j in g.nodes: #Igual que en PlotNode
+        plt.plot(j.x,j.y,"o",color = "gray",markersize=4)
+        plt.text(j.x+0.5,j.y+0.5,str(j.name),color='black', fontsize=6, weight='bold')
+        for i in j.neighbors: 
+            adj = (Distance(i,j)-0.6)/Distance(i,j)
+            plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.5, head_length=0.6, fc='gray', ec='gray')
+            plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(Distance(i,j)//0.01/100),color='black', fontsize=6, weight='bold')
+    for j in reach: #Similar a PlotNode pero con todos los elementos de la lista que devuelve reach
+        plt.plot(j.x,j.y,"o",color = "green",markersize=4)
+        plt.text(j.x+0.5,j.y+0.5,j.name,color = "black", fontsize=6, weight='bold')
+        for i in j.neighbors:
+            adj = (Distance(i,j)-0.6)/Distance(i,j)
+            plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.5, head_length=0.6, fc='green', ec='green')
+            plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(Distance(i,j)//0.01/100),color='black', fontsize=6, weight='bold')
+    plt.axis([-5,25,-5,25])
+    plt.grid(color='red', linestyle='dashed', linewidth=0.5)
+    plt.title('Grafico del alcance de '+reach[0].name)
+    plt.show()
+
+def FindShortestPath(origin,destination): #Se ha seguido el algoritmo sugerido en atenea | se ha de dar el nodo de origen y destino directamente, no el nombre de estos como en otras funciones
+    paths = [Path()]
+    AddNodeToPath(paths[0],origin)
+    while len(paths)>0:
+        lowest = paths[0]
+        for i in paths:
+            if PathLength(i)+Distance(i.nodes[-1],destination)< PathLength(lowest)+Distance(lowest.nodes[-1],destination):
+                lowest=i
+        paths.remove(lowest) #Busca el nodo con la menor distancia estimada y se lo guarda aparte como lowest borrandolo de la lista
+
+        for i in lowest.nodes[-1].neighbors:
+            if i == destination:
+                AddNodeToPath(lowest,i) #Si ya ha llegado al destino
+                return lowest #Como lo devolvemos ya, la funcion acaba por lo que no hace falta comprobar en el while si ya se ha encontrado el camino
+            elif i not in lowest.nodes: #Si no esta ya en el camino, porque si no estariamos dando vueltas
+                iteraciones = 0
+                coste=PathLength(lowest)+Distance(lowest.nodes[-1],i)
+                for j in paths:
+                    if i in j.nodes:
+                        if coste>=PathLength(j):
+                            iteraciones+=1 #Si iteraciones=n, ha encontrado n caminos mejores ya existentes en la lista de caminos hasta el nodo que estamos comprobando
+                        else:
+                            paths.remove(j) #Si esta en uno de los caminos de la lista, pero este nuevo camino es mas corto, que elimine el que ya estaba (que era mas largo)
+                
+                if iteraciones<1:
+                    new = Path()
+                    new.nodes=list(lowest.nodes)
+                    new.segments=list(lowest.segments)
+                    AddNodeToPath(new, i)
+                    paths.append(new) #Si no hay camino mejor a dicho vecino, añade el camino hasta este a la lista de caminos
+    return None

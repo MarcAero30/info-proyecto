@@ -48,6 +48,13 @@ print (n.name) # La respuesta debe ser J
 n = GetClosest(G,8,19)
 print (n.name) # La respuesta debe ser B
 SaveGraph(G,"graph")
-H = LoadGraph("graph")
-Plot(H)
-PlotNode(H, "C")
+H = LoadGraph("graph3.txt")
+#Plot(H)
+#PlotNode(H, "C")
+
+reach = Reachability(H,"D")
+PlotReachability(H,reach)
+
+shortest = FindShortestPath(G.nodes[0],G.nodes[5])
+if shortest != None:
+    PlotPath(G,shortest)
