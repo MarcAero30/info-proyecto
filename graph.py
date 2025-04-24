@@ -93,7 +93,7 @@ def PlotNode(g,nameOrigin):
         plt.text(j.x+0.5,j.y+0.5,j.name,color = "black", fontsize=6, weight='bold')
     plt.axis([-5,25,-5,25])
     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
-    plt.title('Grafico con nodos y segmentos')
+    plt.title('Grafico de vecinos de '+nameOrigin)
     plt.show()
 #Busca el nombre del nodo seleccionado en la lista de nodos y la posicion de este pasa a ser i
 #Plot del nodo y nombre
