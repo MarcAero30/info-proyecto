@@ -31,11 +31,13 @@ def DeleteNode(g,n):
     i=0
     found = False
     while i<len(g.nodes) and not found:
-        if n == g.nodes[i]:
+        if n == g.nodes[i].name:
             found = True
         i+=1
     if found:
-        g.nodes.pop(g.nodes[i])
+        print("Longitud de nodes: ", len(g.nodes))
+        g.nodes.pop(i)
+        print("Longitud de nodes: ", len(g.nodes))
 
 def AddSegment(g, nameOriginNode, nameDestinationNode):
     i=0

@@ -8,7 +8,8 @@ import os
 from graph import (
     Plot,
     LoadGraph,
-    GetClosest
+    GetClosest,
+    DeleteNode
 )
 # Crear ventana principal
 ventana = tk.Tk()
@@ -42,8 +43,8 @@ def get_closest():
     print(GetClosest(g, x_interface.get(), y_interface.get()).name)
 
 def get_input_delete():
-    user_input = entry.get()
-    print(f"User input: {user_input}")
+    global g
+    DeleteNode(g, label.cget("text").split(": ")[1])
 
     
 
@@ -81,6 +82,7 @@ boton2.grid(row=2, column=3, padx=40, pady=10)
 boton3.grid(row=3, column=3, padx=10, pady=10)
 entry.grid(row=4, column=3, padx=40, pady=10)
 buttonClosest.grid(row=5, column=3, padx=40, pady=10)
+button.grid(row=5, column=4, padx=40, pady=10)
 
 
 # Iniciar el bucle principal
