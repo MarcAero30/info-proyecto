@@ -33,11 +33,13 @@ def DeleteNode(g,n):
     while i<len(g.nodes) and not found:
         if n == g.nodes[i].name:
             found = True
-        i+=1
+        else:
+            i+=1
     if found:
         print("Longitud de nodes: ", len(g.nodes))
         g.nodes.pop(i)
         print("Longitud de nodes: ", len(g.nodes))
+        SaveGraph(g, "graph")
 
 def AddSegment(g, nameOriginNode, nameDestinationNode):
     i=0
@@ -111,7 +113,8 @@ def Plot(g, root, label, x_interface, y_interface):  # root is the Tkinter windo
     ax.set_title('Grafico con nodos y segmentos')
 
     # Connect the on_click function to the button press event
-    fig.canvas.mpl_connect('button_press_event', lambda event: on_click(event, g, label, x_interface, y_interface))
+    if(not x_interface == None):
+        fig.canvas.mpl_connect('button_press_event', lambda event: on_click(event, g, label, x_interface, y_interface))
 
     # Embed the plot in the Tkinter window
     canvas = FigureCanvasTkAgg(fig, master=root)  # root is the Tkinter window

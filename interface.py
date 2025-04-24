@@ -45,7 +45,7 @@ def get_closest():
 def get_input_delete():
     global g
     DeleteNode(g, label.cget("text").split(": ")[1])
-
+    show_graph("graph")
     
 
 def show_graph(g_name):
@@ -71,7 +71,7 @@ boton3 = tk.Button(ventana, text="Abrir archivo",command=lambda: select_file(),w
 entry = tk.Entry(ventana, width=30)
 
 buttonClosest = tk.Button(ventana, text="Buscar más cercano", command=get_closest)
-button = tk.Button(ventana, text="Eliminar segmento", command=get_input_delete)
+button = tk.Button(ventana, text="Eliminar nodo", command=get_input_delete)
 
 
 
