@@ -284,7 +284,7 @@ def PlotReachability(g,reach):
     plt.title('Grafico del alcance de '+reach[0].name)
     plt.show()
 
-def FindShortestPath(g,originName,destinationName): #Se ha seguido el algoritmo sugerido en atenea | se ha de dar el nodo de origen y destino directamente, no el nombre de estos como en otras funciones
+def FindShortestPath(g,originName,destinationName): #Se ha seguido el algoritmo sugerido en atenea
     i=0
     found = 0
     while i<len(g.nodes) and found<2:
@@ -295,9 +295,6 @@ def FindShortestPath(g,originName,destinationName): #Se ha seguido el algoritmo 
             found+=1
             destination = g.nodes[i]
         i+=1
-
-    print(origin)
-    print(destination)
 
     paths = [Path()]
     AddNodeToPath(paths[0],origin)
