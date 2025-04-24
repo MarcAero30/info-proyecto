@@ -35,10 +35,7 @@ def DeleteNode(g,n):
             found = True
         i+=1
     if found:
-        return False
-    else:
-        g.nodes.remove(n)
-        return True
+        g.nodes.pop(g.nodes[i])
 
 def AddSegment(g, nameOriginNode, nameDestinationNode):
     i=0
