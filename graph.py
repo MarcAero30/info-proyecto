@@ -13,6 +13,16 @@ class Graph:
         self.selected_node = None
 #Clase graph con una lista de nodos y segmentos
 
+def FindCoordinates(g,n):
+    i=0
+    found = False
+    while i<len(g.nodes) and not found:
+        if n == g.nodes[i].name:
+            found = True
+        else:
+            i+=1
+    return [g.nodes[i].x, g.nodes[i].y]
+
 def AddNode(g,n):
     i=0
     found = False
@@ -97,6 +107,20 @@ def on_click(event, g, label, x_interface, y_interface):
         y_interface.set(y)
         label.config(text=f"Selected Node: {closest_node.name}")
 
+def PlotOG(g):
+     for i in g.nodes:
+         plt.plot(i.x,i.y,"o",color = "red",markersize=4)
+         plt.text(i.x+0.5,i.y+0.5,str(i.name),color='green', fontsize=6, weight='bold')
+     for i in g.segments:
+         adj = (Distance(i.origin,i.destination)-0.6)/Distance(i.origin,i.destination)
+         plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.5, head_length=0.6, fc='blue', ec='blue')
+         plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(Distance(i.origin,i.destination)//0.01/100),color='black', fontsize=6, weight='bold')
+     plt.axis([-5,25,-5,25])
+     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
+     plt.title('Grafico con nodos y segmentos')
+     plt.show()
+ #muestra los nodos y su nombre arriba a la derecha
+ #Muestra los segmentos como flechas y la longitud de estos en el centro
 
 def Plot(g, root=None, label=None, x_interface=None, y_interface=None):  # root is the Tkinter window passed from the interface.py
     fig, ax = plt.subplots()  # Create figure and axis
@@ -131,9 +155,6 @@ def Plot(g, root=None, label=None, x_interface=None, y_interface=None):  # root 
         canvas = FigureCanvasTkAgg(fig, master=root)  # root is the Tkinter window
         canvas.draw()
         canvas.get_tk_widget().grid(row=6, column=3)  # Pack the widget to make it visible
-
-#muestra los nodos y su nombre arriba a la derecha
-#Muestra los segmentos como flechas y la longitud de estos en el centro
 
 def PlotNode(g,nameOrigin):
     for i in g.nodes:
