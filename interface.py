@@ -8,7 +8,7 @@ import os
 from graph import (
     Plot,
     LoadGraph,
-    GetClosestNeightbor,
+    PlotNode,
     DeleteNode,
     FindCoordinates
 )
@@ -38,9 +38,8 @@ def select_file():
     else:
         print("No file selected")
 
-def get_closest():
-    coordinates = FindCoordinates(label.cget("text").split(": ")[1])
-    print(GetClosestNeightbor(g, coordinates[0], coordinates[1]))
+def get_neighbors():
+    PlotNode(g, label.cget("text").split(": ")[1])
 
 def get_input_delete():
     global g
@@ -70,7 +69,7 @@ boton3 = tk.Button(ventana, text="Abrir archivo",command=lambda: select_file(),w
                    bg=color_boton_3, fg="white")
 entry = tk.Entry(ventana, width=30)
 
-buttonClosest = tk.Button(ventana, text="Buscar más cercano", command=get_closest)
+buttonNeighbors = tk.Button(ventana, text="Buscar nodos vecinos", command=get_neighbors)
 button = tk.Button(ventana, text="Eliminar nodo", command=get_input_delete)
 
 
@@ -81,7 +80,7 @@ boton1.grid(row=1, column=3, padx=40, pady=10)
 boton2.grid(row=2, column=3, padx=40, pady=10)
 boton3.grid(row=3, column=3, padx=10, pady=10)
 entry.grid(row=4, column=3, padx=40, pady=10)
-buttonClosest.grid(row=5, column=3, padx=40, pady=10)
+buttonNeighbors.grid(row=5, column=3, padx=40, pady=10)
 button.grid(row=5, column=4, padx=40, pady=10)
 
 
