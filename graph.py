@@ -185,14 +185,14 @@ def PlotReachability(g,reach):
         plt.text(j.x+0.5,j.y+0.5,str(j.name),color='black', fontsize=6, weight='bold')
         for i in j.neighbors: 
             adj = (Distance(i,j)-0.6)/Distance(i,j)
-            plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.5, head_length=0.6, fc='gray', ec='gray')
+            plt.arrow(j.x,j.y,(i.x-j.x)*adj,(i.y-j.y)*adj, head_width=0.5, head_length=0.6, fc='gray', ec='gray')
             plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(Distance(i,j)//0.01/100),color='black', fontsize=6, weight='bold')
     for j in reach: #Similar a PlotNode pero con todos los elementos de la lista que devuelve reach
         plt.plot(j.x,j.y,"o",color = "green",markersize=4)
         plt.text(j.x+0.5,j.y+0.5,j.name,color = "black", fontsize=6, weight='bold')
         for i in j.neighbors:
             adj = (Distance(i,j)-0.6)/Distance(i,j)
-            plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.5, head_length=0.6, fc='green', ec='green')
+            plt.arrow(j.x,j.y,(i.x-j.x)*adj,(i.y-j.y)*adj, head_width=0.5, head_length=0.6, fc='green', ec='green')
             plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(Distance(i,j)//0.01/100),color='black', fontsize=6, weight='bold')
     plt.axis([-5,25,-5,25])
     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
