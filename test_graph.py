@@ -50,11 +50,11 @@ print (n.name) # La respuesta debe ser B
 SaveGraph(G,"graph")
 H = LoadGraph("graph3.txt")
 #PlotOG(H)
-#PlotNode(H, "I")
+PlotNode(H, "I")
 
 reach = Reachability(H,"A")
 PlotReachability(H,reach)
 
-shortest = FindShortestPath(G.nodes[0],G.nodes[5])
+shortest = FindShortestPath(G,"A","D")
 if shortest != None:
     PlotPath(G,shortest)
