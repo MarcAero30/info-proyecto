@@ -79,7 +79,6 @@ def GetClosest (g, x,y):
     punto = Node("punto",x,y)
     for i in g.nodes:
         if Distance(punto,closest)>Distance(punto,i):
-            print(Distance(punto, i))
             closest = i
     return closest
 
