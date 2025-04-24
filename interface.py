@@ -7,7 +7,8 @@ import os
 #mostrar_grafico son las funciones del otro archivo
 from graph import (
     Plot,
-    LoadGraph
+    LoadGraph,
+    GetClosest
 )
 # Crear ventana principal
 ventana = tk.Tk()
@@ -15,6 +16,10 @@ ventana.title("Ventana de Tkinter")
 ventana.geometry("400x300")  # Ancho x Alto
 ventana.configure(bg="#339fff")
 g = None
+x_interface = tk.IntVar()
+y_interface = tk.IntVar()
+label = tk.Label(ventana, text="Selected Node: ")
+labelClosest = tk.Label(ventana, text="")
 
 def select_file():
     # Create a Tkinter root window
@@ -27,23 +32,25 @@ def select_file():
     # Print the selected file path
     if file_path:
         print(f"Selected file: {os.path.basename(file_path)}")
-        Plot(LoadGraph(os.path.basename(file_path)), ventana)
+        Plot(LoadGraph(os.path.basename(file_path)), ventana, label, x_interface, y_interface)
     else:
         print("No file selected")
 
-def get_input_closest():
-    user_input = entry.get()  # Retrieve the input text from the Entry widget
-    x, y = busca_encuentra(user_input)
-    print(x, ", ", y)
-    print(f"User input: {user_input}")
+def get_closest():
+    print(x_interface.get())
+    print(y_interface.get())
+    print(GetClosest(g, x_interface.get(), y_interface.get()).name)
 
 def get_input_delete():
     user_input = entry.get()
     print(f"User input: {user_input}")
 
+    
+
 def show_graph(g_name):
+    global g
     g = LoadGraph(g_name)
-    Plot(g, ventana)
+    Plot(g, ventana, label, x_interface, y_interface)
 
 #Colores de los botones
 color_boton_1 = "#b04c0b"
@@ -53,7 +60,6 @@ color_boton_4 = "#b04c0b"
 
 
 # Crear botones
-label = tk.Label(ventana, text="Selected Node: ")
 
 boton1 = tk.Button(ventana, text="Mostrar Graph 1",command=lambda: show_graph("graph"),width=20,
                    bg=color_boton_1, fg="white")
@@ -62,8 +68,8 @@ boton2 = tk.Button(ventana, text="Mostrar Graph 2",command= lambda: show_graph("
 boton3 = tk.Button(ventana, text="Abrir archivo",command=lambda: select_file(),width=20,
                    bg=color_boton_3, fg="white")
 entry = tk.Entry(ventana, width=30)
-button = tk.Button(ventana, text="Buscar más cercano", command=get_input_closest)
-entry = tk.Entry(ventana, width=30)
+
+buttonClosest = tk.Button(ventana, text="Buscar más cercano", command=get_closest)
 button = tk.Button(ventana, text="Eliminar segmento", command=get_input_delete)
 
 
@@ -74,7 +80,8 @@ boton1.grid(row=1, column=3, padx=40, pady=10)
 boton2.grid(row=2, column=3, padx=40, pady=10)
 boton3.grid(row=3, column=3, padx=10, pady=10)
 entry.grid(row=4, column=3, padx=40, pady=10)
-button.grid(row=5, column=3, padx=40, pady=10)
+buttonClosest.grid(row=5, column=3, padx=40, pady=10)
+
 
 # Iniciar el bucle principal
 ventana.mainloop()

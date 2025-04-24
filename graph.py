@@ -55,22 +55,25 @@ def GetClosest (g, x,y):
     punto = Node("punto",x,y)
     for i in g.nodes:
         if Distance(punto,closest)>Distance(punto,i):
+            print(Distance(punto, i))
             closest = i
     return closest
 #Crea un nodo (sin añadirlo a la lista) con nombre "punto" y la posicion que se quiere comparar
 #Recorre la lista de nodos, comprobando si la distancia del punto al cercano es mayor o menor a la del punto al nodo a comprobar y si es mayor, el cercano pasa a ser ese nuevo punto
 
-def on_click(g, event):
-    # Get the coordinates of the click
+def on_click(event, g, label, x_interface, y_interface):
     x, y = event.xdata, event.ydata
-    if x is not None and y is not None:  # Check if the click is within the plot
+    if x is not None and y is not None:
+        closest_node = GetClosest(g, x, y)
+        g.selected_node = closest_node
         print(f"Clicked at: ({x}, {y})")
-        print(GetClosest(g, x, y).name)
-        g.selected_node = GetClosest(g, x, y)
+        print(f"Closest node: {closest_node.name}")
+        x_interface.set(x)
+        y_interface.set(y)
+        label.config(text=f"Selected Node: {closest_node.name}")
 
 
-
-def Plot(g, root):  # root is the Tkinter window passed from the interface.py
+def Plot(g, root, label, x_interface, y_interface):  # root is the Tkinter window passed from the interface.py
     fig, ax = plt.subplots()  # Create figure and axis
 
     # Plot nodes
@@ -96,7 +99,7 @@ def Plot(g, root):  # root is the Tkinter window passed from the interface.py
     ax.set_title('Grafico con nodos y segmentos')
 
     # Connect the on_click function to the button press event
-    fig.canvas.mpl_connect('button_press_event', partial(on_click, g))
+    fig.canvas.mpl_connect('button_press_event', lambda event: on_click(event, g, label, x_interface, y_interface))
 
     # Embed the plot in the Tkinter window
     canvas = FigureCanvasTkAgg(fig, master=root)  # root is the Tkinter window
