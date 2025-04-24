@@ -87,7 +87,7 @@ def on_click(event, g, label, x_interface, y_interface):
         label.config(text=f"Selected Node: {closest_node.name}")
 
 
-def Plot(g, root, label=None, x_interface=None, y_interface=None):  # root is the Tkinter window passed from the interface.py
+def Plot(g, root=None, label=None, x_interface=None, y_interface=None):  # root is the Tkinter window passed from the interface.py
     fig, ax = plt.subplots()  # Create figure and axis
 
     # Plot nodes
@@ -116,10 +116,10 @@ def Plot(g, root, label=None, x_interface=None, y_interface=None):  # root is th
     if(not x_interface == None):
         fig.canvas.mpl_connect('button_press_event', lambda event: on_click(event, g, label, x_interface, y_interface))
 
-    # Embed the plot in the Tkinter window
-    canvas = FigureCanvasTkAgg(fig, master=root)  # root is the Tkinter window
-    canvas.draw()
-    canvas.get_tk_widget().grid(row=6, column=3)  # Pack the widget to make it visible
+        # Embed the plot in the Tkinter window
+        canvas = FigureCanvasTkAgg(fig, master=root)  # root is the Tkinter window
+        canvas.draw()
+        canvas.get_tk_widget().grid(row=6, column=3)  # Pack the widget to make it visible
 
 #muestra los nodos y su nombre arriba a la derecha
 #Muestra los segmentos como flechas y la longitud de estos en el centro
