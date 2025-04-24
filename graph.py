@@ -87,7 +87,7 @@ def on_click(event, g, label, x_interface, y_interface):
         label.config(text=f"Selected Node: {closest_node.name}")
 
 
-def Plot(g, root, label, x_interface, y_interface):  # root is the Tkinter window passed from the interface.py
+def Plot(g, root, label=None, x_interface=None, y_interface=None):  # root is the Tkinter window passed from the interface.py
     fig, ax = plt.subplots()  # Create figure and axis
 
     # Plot nodes
