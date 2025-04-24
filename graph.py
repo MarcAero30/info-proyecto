@@ -149,6 +149,11 @@ def LoadGraph(filename):
 #Lee tres lineas, correspondientes a los tres parametros de segments y añade el segmento mediante la funcion Addsegment, lo que a su misma vez añade los vecinos y las distancias de los nodos y segmentos correspondientemente
 
 def Reachability(g,nodename):
+    for node in g.nodes:
+        if node.name==nodename:
+            origin=node
+            break
+        
     i=0
     found = False
     while i <len(g.nodes):
@@ -157,7 +162,7 @@ def Reachability(g,nodename):
         i+=1       #Busca el nodo que queremos y lo añade a la lista de los nodos a los que llega
     i-=1
     if found:
-        reach =[g.nodes[i]]
+        reach =[origin]
         new = True
         while new:
             new = False
@@ -175,13 +180,13 @@ def Reachability(g,nodename):
         print("No se ha encontrado dicho nodo.")
 
 def PlotReachability(g,reach):
-    for i in g.nodes: #Igual que en PlotNode
-        plt.plot(i.x,i.y,"o",color = "gray",markersize=4)
-        plt.text(i.x+0.5,i.y+0.5,str(i.name),color='black', fontsize=6, weight='bold')
-    for i in g.segments: #Igual que en Plot
-        adj = (Distance(i.origin,i.destination)-0.6)/Distance(i.origin,i.destination)
-        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.5, head_length=0.6, fc='gray', ec='gray')
-        plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(Distance(i.origin,i.destination)//0.01/100),color='black', fontsize=6, weight='bold')
+    for j in g.nodes: #Igual que en PlotNode
+        plt.plot(j.x,j.y,"o",color = "gray",markersize=4)
+        plt.text(j.x+0.5,j.y+0.5,str(j.name),color='black', fontsize=6, weight='bold')
+        for i in j.neighbors: 
+            adj = (Distance(i,j)-0.6)/Distance(i,j)
+            plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.5, head_length=0.6, fc='gray', ec='gray')
+            plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(Distance(i,j)//0.01/100),color='black', fontsize=6, weight='bold')
     for j in reach: #Similar a PlotNode pero con todos los elementos de la lista que devuelve reach
         plt.plot(j.x,j.y,"o",color = "green",markersize=4)
         plt.text(j.x+0.5,j.y+0.5,j.name,color = "black", fontsize=6, weight='bold')
