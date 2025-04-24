@@ -72,6 +72,17 @@ def GetClosest (g, x,y):
             print(Distance(punto, i))
             closest = i
     return closest
+
+def GetClosestNeightbor(g, x,y):
+    print("Holaaaa")
+    closest = g.nodes[0]
+    punto = Node("punto",x,y)
+    for i in g.nodes:
+        if Distance(punto,closest)>Distance(punto,i) and Distance(punto,i) >= 0.1:
+            print(i.name)
+            print(Distance(punto, i))
+            closest = i
+    return closest
 #Crea un nodo (sin añadirlo a la lista) con nombre "punto" y la posicion que se quiere comparar
 #Recorre la lista de nodos, comprobando si la distancia del punto al cercano es mayor o menor a la del punto al nodo a comprobar y si es mayor, el cercano pasa a ser ese nuevo punto
 

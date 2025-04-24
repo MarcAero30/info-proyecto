@@ -8,8 +8,9 @@ import os
 from graph import (
     Plot,
     LoadGraph,
-    GetClosest,
-    DeleteNode
+    GetClosestNeightbor,
+    DeleteNode,
+    FindCoordinates
 )
 # Crear ventana principal
 ventana = tk.Tk()
@@ -38,9 +39,8 @@ def select_file():
         print("No file selected")
 
 def get_closest():
-    print(x_interface.get())
-    print(y_interface.get())
-    print(GetClosest(g, x_interface.get(), y_interface.get()).name)
+    coordinates = FindCoordinates(label.cget("text").split(": ")[1])
+    print(GetClosestNeightbor(g, coordinates[0], coordinates[1]))
 
 def get_input_delete():
     global g
