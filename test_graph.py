@@ -41,7 +41,7 @@ def CreateGraph_1 ():
     return G
 print ("Probando el grafo...")
 G = CreateGraph_1 ()
-Plot(G)
+PlotOG(G)
 PlotNode(G, "C")
 n = GetClosest(G,15,5)
 print (n.name) # La respuesta debe ser J
@@ -49,8 +49,8 @@ n = GetClosest(G,8,19)
 print (n.name) # La respuesta debe ser B
 SaveGraph(G,"graph")
 H = LoadGraph("graph3.txt")
-Plot(H)
-PlotNode(H, "I")
+#PlotOG(H)
+#PlotNode(H, "I")
 
 reach = Reachability(H,"A")
 PlotReachability(H,reach)

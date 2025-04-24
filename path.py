@@ -61,5 +61,5 @@ def PlotPath (g, path):
         plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.5, head_length=0.6, fc='blue', ec='blue')
     plt.axis([-5,25,-5,25])
     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
-    plt.title('Camino')
+    plt.title('Camino mas corto entre '+path.nodes[0].name+" y "+path.nodes[-1].name)
     plt.show()
