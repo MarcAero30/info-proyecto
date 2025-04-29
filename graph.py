@@ -281,7 +281,6 @@ def PlotReachability(g,reach):
     plt.show()
 
 def FindShortestPath(g,originName,destinationName): #Se ha seguido el algoritmo sugerido en atenea
-    
     i=0
     found = 0
     while i<len(g.nodes) and found<2:
