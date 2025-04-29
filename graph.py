@@ -164,8 +164,8 @@ def PlotNode(g,nameOrigin):
     while i<len(g.nodes) and not found:
         if nameOrigin == g.nodes[i].name:
             found = True
-            i-=1
-        i+=1
+        else:
+            i+=1
     if found:
         plt.plot(g.nodes[i].x,g.nodes[i].y,"o",color = "blue",markersize=4)
         plt.text(g.nodes[i].x+0.5,g.nodes[i].y+0.5,str(g.nodes[i].name),color = "black", fontsize=6, weight='bold')
@@ -233,18 +233,15 @@ def LoadGraph(filename):
 #Lee tres lineas, correspondientes a los tres parametros de segments y añade el segmento mediante la funcion Addsegment, lo que a su misma vez añade los vecinos y las distancias de los nodos y segmentos correspondientemente
 
 def Reachability(g,nodename):
-    for node in g.nodes:
-        if node.name==nodename:
-            origin=node
-            break
-        
     i=0
     found = False
-    while i <len(g.nodes):
+    while i <len(g.nodes) and not found:
         if g.nodes[i].name==nodename:
+            origin = g.nodes[i]
             found= True
-        i+=1       #Busca el nodo que queremos y lo añade a la lista de los nodos a los que llega
-    i-=1
+        else:
+            i+=1       #Busca el nodo que queremos y lo añade a la lista de los nodos a los que llega
+    
     if found:
         reach =[origin]
         new = True
@@ -284,6 +281,7 @@ def PlotReachability(g,reach):
     plt.show()
 
 def FindShortestPath(g,originName,destinationName): #Se ha seguido el algoritmo sugerido en atenea
+    
     i=0
     found = 0
     while i<len(g.nodes) and found<2:
@@ -297,6 +295,7 @@ def FindShortestPath(g,originName,destinationName): #Se ha seguido el algoritmo 
 
     paths = [Path()]
     AddNodeToPath(paths[0],origin)
+
     while len(paths)>0:
         lowest = paths[0]
         for i in paths:
@@ -324,4 +323,3 @@ def FindShortestPath(g,originName,destinationName): #Se ha seguido el algoritmo 
                     new.segments=list(lowest.segments)
                     AddNodeToPath(new, i)
                     paths.append(new) #Si no hay camino mejor a dicho vecino, añade el camino hasta este a la lista de caminos
-    return None

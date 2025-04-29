@@ -50,7 +50,7 @@ print ("El mas cercano a dicho punto es: ",n.name) # La respuesta debe ser B
 SaveGraph(G,"graph")
 H = LoadGraph("graph3.txt")
 #PlotOG(H)
-PlotNode(H, "I")
+#PlotNode(H, "I")
 
 reach = Reachability(H,"A")
 PlotReachability(H,reach)
