@@ -42,9 +42,7 @@ def CostToNode(path,node):
             i+=1
             if path.nodes[i].name == node.name:
                 found = True
-        return length
-    else:
-        return -1 #Suma la longitud de todos los segmentos
+        return length  #Suma la longitud de todos los segmentos
 
 def PlotPath (g, path):
     for i in g.nodes: #Igual que en PlotNode
