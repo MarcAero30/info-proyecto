@@ -7,8 +7,13 @@ from graph import (
     LoadGraph,
     PlotNode,
     DeleteNode,
-    FindCoordinates
+    FindCoordinates,
+    PlotReachability,
+    Reachability,
+    FindShortestPath
 )
+
+from path import *
 
 # Crear ventana principal
 ventana = tk.Tk()
@@ -57,6 +62,14 @@ def show_graph(g_name):
     g = LoadGraph(g_name)
     Plot(g, main_area, label, x_interface, y_interface)
 
+def show_reachability():
+    PlotReachability(g, Reachability(g, label.cget("text").split(": ")[1]))
+
+def show_shortest_path():
+    shortest = FindShortestPath(g,entry2.get(),entry3.get())
+    if shortest != None:
+        PlotPath(g,shortest)
+
 # Botones con estilo
 boton_style = {
     "width": 20,
@@ -79,6 +92,12 @@ entry.pack(pady=5, padx=10)
 
 tk.Button(sidebar, text="Buscar nodos vecinos", command=get_neighbors, **boton_style).pack(pady=5)
 tk.Button(sidebar, text="Eliminar nodo", command=get_input_delete, **boton_style).pack(pady=5)
+tk.Button(sidebar, text="Alcance", command=show_reachability, **boton_style).pack(pady=5)
+entry2 = tk.Entry(sidebar, width=25)
+entry2.pack(pady=5, padx=10)
+entry3 = tk.Entry(sidebar, width=25)
+entry3.pack(pady=5, padx=10)
+tk.Button(sidebar, text="Camino más corto", command=show_shortest_path, **boton_style).pack(pady=5)
 
 # Loop
 ventana.mainloop()
