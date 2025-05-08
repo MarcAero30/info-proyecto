@@ -41,6 +41,12 @@ label.pack(pady=(20, 5), padx=10, anchor="w")
 labelClosest = tk.Label(sidebar, text="", bg="#1f2f3f", fg="white")
 labelClosest.pack(padx=10, anchor="w")
 
+
+
+
+
+
+
 def select_file():
     global g
     file_path = filedialog.askopenfilename()
@@ -72,6 +78,17 @@ def show_shortest_path():
     if shortest != None:
         PlotPath(g,shortest)
 
+
+menubar = tk.Menu(ventana)
+
+file_menu = tk.Menu(menubar, tearoff=0)
+file_menu.add_command(label="Mostrar Graph 1", command=lambda: show_graph("graph"))
+file_menu.add_command(label="Mostrar Graph 2", command=lambda: show_graph("graph2"))
+file_menu.add_command(label="Abrir archivo", command=select_file)
+
+menubar.add_cascade(label="Archivo", menu=file_menu)
+ventana.config(menu=menubar)
+
 # Botones con estilo
 boton_style = {
     "width": 20,
@@ -83,20 +100,13 @@ boton_style = {
     "activebackground": "#d65a1f"
 }
 
-tk.Button(sidebar, text="Mostrar Graph 1", command=lambda: show_graph("graph"), **boton_style).pack(pady=5)
-tk.Button(sidebar, text="Mostrar Graph 2", command=lambda: show_graph("graph2"), **boton_style).pack(pady=5)
-tk.Button(sidebar, text="Abrir archivo", command=select_file, **boton_style).pack(pady=5)
-
-# Entrada de texto
-tk.Label(sidebar, text="Nombre del nodo:", bg="#1f2f3f", fg="white").pack(pady=(15, 5), padx=10, anchor="w")
-entry = tk.Entry(sidebar, width=25)
-entry.pack(pady=5, padx=10)
-
 tk.Button(sidebar, text="Buscar nodos vecinos", command=get_neighbors, **boton_style).pack(pady=5)
 tk.Button(sidebar, text="Eliminar nodo", command=get_input_delete, **boton_style).pack(pady=5)
 tk.Button(sidebar, text="Alcance", command=show_reachability, **boton_style).pack(pady=5)
+tk.Label(sidebar, text="Nodo 1:", bg="#1f2f3f", fg="white").pack(pady=(15, 5), padx=10, anchor="w")
 entry2 = tk.Entry(sidebar, width=25)
 entry2.pack(pady=5, padx=10)
+tk.Label(sidebar, text="Nodo 2:", bg="#1f2f3f", fg="white").pack(pady=(15, 5), padx=10, anchor="w")
 entry3 = tk.Entry(sidebar, width=25)
 entry3.pack(pady=5, padx=10)
 tk.Button(sidebar, text="Camino más corto", command=show_shortest_path, **boton_style).pack(pady=5)
