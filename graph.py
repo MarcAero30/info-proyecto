@@ -154,6 +154,7 @@ def Plot(g, root=None, label=None, x_interface=None, y_interface=None):  # root 
         canvas = FigureCanvasTkAgg(fig, master=root)  # root is the Tkinter window
         canvas.draw()
         canvas.get_tk_widget().grid(row=6, column=3)  # Pack the widget to make it visible
+    plt.close(fig)
 
 def PlotNode(g,nameOrigin):
     for i in g.nodes:
@@ -347,3 +348,21 @@ def LoadGraph(filename):
         AddSegment(g, origin, destination)
     F.close()
     return g
+
+def DeleteSegment(g, s):
+    i = 0
+    found = False
+    while i < len(g.segments) and not found:
+        if s == g.segments[i].name:
+            found = True
+        else:
+            i += 1
+    if found:
+        print("Longitud de segments:", len(g.segments))
+        origin = g.segments[i].origin
+        destination = g.segments[i].destination
+        g.segments.pop(i)
+        if destination in origin.neighbors:
+            origin.neighbors.remove(destination)
+        print("Longitud de segments:", len(g.segments))
+        SaveGraph(g, "graph")

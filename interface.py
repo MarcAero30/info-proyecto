@@ -10,7 +10,8 @@ from graph import (
     FindCoordinates,
     PlotReachability,
     Reachability,
-    FindShortestPath
+    FindShortestPath,
+    DeleteSegment
 )
 
 from path import *
@@ -40,12 +41,6 @@ label.pack(pady=(20, 5), padx=10, anchor="w")
 
 labelClosest = tk.Label(sidebar, text="", bg="#1f2f3f", fg="white")
 labelClosest.pack(padx=10, anchor="w")
-
-
-
-
-
-
 
 def select_file():
     global g
@@ -77,6 +72,10 @@ def show_shortest_path():
     shortest = FindShortestPath(g,entry2.get(),entry3.get())
     if shortest != None:
         PlotPath(g,shortest)
+def get_input_delete_s():
+    global g
+    DeleteSegment(g, entry4.get())
+    show_graph("graph")
 
 
 menubar = tk.Menu(ventana)
@@ -110,6 +109,12 @@ tk.Label(sidebar, text="Nodo 2:", bg="#1f2f3f", fg="white").pack(pady=(15, 5), p
 entry3 = tk.Entry(sidebar, width=25)
 entry3.pack(pady=5, padx=10)
 tk.Button(sidebar, text="Camino más corto", command=show_shortest_path, **boton_style).pack(pady=5)
+
+tk.Label(sidebar, text="Nombre del Segmento:", bg="#1f2f3f", fg="white").pack(pady=(15, 5), padx=10, anchor="w")
+entry4 = tk.Entry(sidebar, width=25)
+entry4.pack(pady=5, padx=10)
+
+tk.Button(sidebar, text="Eliminar Segment", command=get_input_delete_s, **boton_style).pack(pady=5)
 
 # Loop
 ventana.mainloop()
