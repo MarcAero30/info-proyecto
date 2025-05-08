@@ -322,3 +322,28 @@ def FindShortestPath(g,originName,destinationName): #Se ha seguido el algoritmo 
                     new.segments=list(lowest.segments)
                     AddNodeToPath(new, i)
                     paths.append(new) #Si no hay camino mejor a dicho vecino, añade el camino hasta este a la lista de caminos
+
+
+def LoadGraph(filename):
+    g=Graph()
+    F=open(filename)
+    linea = F.readline().rstrip()
+    while linea != "":
+        name = linea
+        linea = F.readline().rstrip()
+        x =  float(linea)
+        linea = F.readline().rstrip()
+        y = float(linea)
+        linea = F.readline().rstrip()
+        g.nodes.append(Node(name,x,y))
+    linea = F.readline().rstrip()
+    while linea != "":
+        name = linea
+        linea = F.readline().rstrip()
+        origin=linea
+        linea = F.readline().rstrip()
+        destination=linea
+        linea = F.readline().rstrip()
+        AddSegment(g, origin, destination)
+    F.close()
+    return g
