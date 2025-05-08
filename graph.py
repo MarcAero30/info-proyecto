@@ -37,6 +37,18 @@ def AddNode(g,n):
         return True
 #Funcion que recorre la lista de nodos, si no encuentra el nodo que se desea añadir, se añade y se devuelve True, si ya estaba, solo se devuelve False
 
+def CreateNode(g,n,x,y):
+    i=0
+    found = False
+    while i<len(g.nodes) and not found:
+        if n == g.nodes[i]:
+            found = True
+        i+=1
+    if not found:
+        AddNode(g,Node(n,x,y))
+    else:
+        print("ya existe un nodo con ese nombre")
+
 def DeleteNode(g,n):
     i=0
     found = False
