@@ -42,10 +42,12 @@ labelClosest = tk.Label(sidebar, text="", bg="#1f2f3f", fg="white")
 labelClosest.pack(padx=10, anchor="w")
 
 def select_file():
+    global g
     file_path = filedialog.askopenfilename()
     if file_path:
         print(f"Selected file: {os.path.basename(file_path)}")
-        Plot(LoadGraph(os.path.basename(file_path)), main_area, label, x_interface, y_interface)
+        g = LoadGraph(os.path.basename(file_path))
+        Plot(g, main_area, label, x_interface, y_interface)
     else:
         print("No file selected")
 
