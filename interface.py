@@ -4,6 +4,8 @@ import os
 
 from graph import (
     Plot,
+    AddNode,
+    AddSegment,
     LoadGraph,
     PlotNode,
     DeleteNode,
@@ -15,11 +17,12 @@ from graph import (
 )
 
 from path import *
+from node import *
 
 # Crear ventana principal
 ventana = tk.Tk()
 ventana.title("Graph Viewer")
-ventana.geometry('1500x800')
+ventana.state('zoomed')
 ventana.configure(bg="#339fff")
 
 # Variables globales
@@ -63,6 +66,10 @@ def get_input_delete():
 def show_graph(g_name):
     global g
     g = LoadGraph(g_name)
+    print("Name: ", g.name)
+    Plot(g, main_area, label, x_interface, y_interface)
+
+def show_graph_by_g(g):
     Plot(g, main_area, label, x_interface, y_interface)
 
 def show_reachability():
@@ -75,8 +82,55 @@ def show_shortest_path():
 def get_input_delete_s():
     global g
     DeleteSegment(g, entry4.get())
-    show_graph("graph")
+    show_graph_by_g(g)
 
+def crear_nodo(nombre, x, y):
+    AddNode(g, Node(nombre, x, y))
+    print(g.name)
+    show_graph(g.name)
+
+def crear_segment(nombreOrigen, nombreDestino):
+    AddSegment(g, nombreOrigen, nombreDestino)
+    show_graph(g.name)
+
+def open_create_node_window():
+    new_window = tk.Toplevel()
+    new_window.title("Nuevo Nodo")
+    new_window.geometry("300x200")
+    tk.Label(new_window, text="Nombre:").pack(pady=4)
+    entry_nombre = tk.Entry(new_window)
+    entry_nombre.pack(pady=2)
+
+    # Etiqueta y entrada para X
+    tk.Label(new_window, text="X:").pack(pady=4)
+    entry_x = tk.Entry(new_window)
+    entry_x.pack(pady=4)
+
+    # Etiqueta y entrada para Y
+    tk.Label(new_window, text="Y:").pack(pady=4)
+    entry_y = tk.Entry(new_window)
+    entry_y.pack(pady=2)
+
+    # Botón Crear
+    btn_crear = tk.Button(new_window, text="Crear", command=lambda: crear_nodo(entry_nombre.get(), entry_x.get(), entry_y.get()))
+    btn_crear.pack(pady=4)
+
+def open_create_segment_window():
+    new_window = tk.Toplevel()
+    new_window.title("Nuevo Segmento")
+    new_window.geometry("300x200")
+    tk.Label(new_window, text="Nodo de origen:").pack(pady=4)
+    entry_nombre = tk.Entry(new_window)
+    entry_nombre.pack(pady=2)
+
+    # Etiqueta y entrada para X
+    tk.Label(new_window, text="Nodo de destino").pack(pady=4)
+    entry_x = tk.Entry(new_window)
+    entry_x.pack(pady=4)
+
+    # Botón Crear
+    btn_crear = tk.Button(new_window, text="Crear", command=lambda: crear_segment(entry_nombre.get(), entry_x.get()))
+    btn_crear.pack(pady=4)
 
 menubar = tk.Menu(ventana)
 
@@ -85,7 +139,12 @@ file_menu.add_command(label="Mostrar Graph 1", command=lambda: show_graph("graph
 file_menu.add_command(label="Mostrar Graph 2", command=lambda: show_graph("graph2"))
 file_menu.add_command(label="Abrir archivo", command=select_file)
 
+create_menu = tk.Menu(menubar, tearoff=0)
+create_menu.add_command(label="Crear nodo", command=open_create_node_window)
+create_menu.add_command(label="Crear segmento", command=open_create_segment_window)
+
 menubar.add_cascade(label="Archivo", menu=file_menu)
+menubar.add_cascade(label="Crear", menu=create_menu)
 ventana.config(menu=menubar)
 
 # Botones con estilo

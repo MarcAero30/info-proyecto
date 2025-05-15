@@ -7,10 +7,11 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
 
 class Graph:
-    def __init__ (self):
+    def __init__ (self, name):
         self.nodes = []
         self.segments = []
         self.selected_node = None
+        self.name = name
 #Clase graph con una lista de nodos y segmentos
 
 def FindCoordinates(g,n):
@@ -34,6 +35,7 @@ def AddNode(g,n):
         return False
     else:
         g.nodes.append(n)
+        SaveGraph(g)
         return True
 #Funcion que recorre la lista de nodos, si no encuentra el nodo que se desea añadir, se añade y se devuelve True, si ya estaba, solo se devuelve False
 
@@ -61,7 +63,7 @@ def DeleteNode(g,n):
         print("Longitud de nodes: ", len(g.nodes))
         g.nodes.pop(i)
         print("Longitud de nodes: ", len(g.nodes))
-        SaveGraph(g, "graph")
+        SaveGraph(g)
 
 def AddSegment(g, nameOriginNode, nameDestinationNode):
     i=0
@@ -78,6 +80,7 @@ def AddSegment(g, nameOriginNode, nameDestinationNode):
             
         g.segments.append(Segment(nameOriginNode+nameDestinationNode,OriginNode,DestinationNode))
         AddNeighbor(OriginNode,DestinationNode)
+        SaveGraph(g)
         return True
     else:
         return False
@@ -96,7 +99,6 @@ def GetClosest (g, x,y):
     return closest
 
 def GetClosestNeightbor(g, x,y):
-    print("Holaaaa")
     closest = g.nodes[0]
     punto = Node("punto",x,y)
     for i in g.nodes:
@@ -134,8 +136,8 @@ def PlotOG(g):
  #muestra los nodos y su nombre arriba a la derecha
  #Muestra los segmentos como flechas y la longitud de estos en el centro
 
-def Plot(g, root=None, label=None, x_interface=None, y_interface=None):  # root is the Tkinter window passed from the interface.py
-    fig, ax = plt.subplots()  # Create figure and axis
+def Plot(g, root=None, label=None, x_interface=None, y_interface=None):
+    fig, ax = plt.subplots(figsize=(10, 10))  # Reasonable default, will scale with window
 
     # Plot nodes
     for i in g.nodes:
@@ -159,15 +161,21 @@ def Plot(g, root=None, label=None, x_interface=None, y_interface=None):  # root 
     ax.grid(color='red', linestyle='dashed', linewidth=0.5)
     ax.set_title('Grafico con nodos y segmentos')
 
-    # Connect the on_click function to the button press event
-    if(not x_interface == None):
+    if root is not None:
         fig.canvas.mpl_connect('button_press_event', lambda event: on_click(event, g, label, x_interface, y_interface))
 
-        # Embed the plot in the Tkinter window
-        canvas = FigureCanvasTkAgg(fig, master=root)  # root is the Tkinter window
+        # Embed and expand the plot in the Tkinter window
+        canvas = FigureCanvasTkAgg(fig, master=root)
         canvas.draw()
-        canvas.get_tk_widget().grid(row=6, column=3)  # Pack the widget to make it visible
+        widget = canvas.get_tk_widget()
+        widget.grid(row=6, column=3, sticky='nsew')  # Expand to fill grid cell
+
+        # Make row 6 and column 3 expandable
+        root.grid_rowconfigure(6, weight=1)
+        root.grid_columnconfigure(3, weight=1)
+
     plt.close(fig)
+
 
 def PlotNode(g,nameOrigin):
     for i in g.nodes:
@@ -197,8 +205,8 @@ def PlotNode(g,nameOrigin):
 #Plot del nodo y nombre
 #plot de los vecionos, nombre, y segmentos del origen a sus vecinos
 
-def SaveGraph(g,filename):
-    F = open(filename,"w")
+def SaveGraph(g):
+    F = open(g.name,"w")
     for i in g.nodes:
         F.write(str(i.name)+"\n")
         F.write(str(i.x)+"\n")
@@ -221,7 +229,7 @@ def SaveGraph(g,filename):
 #-nombre nodo destino
 
 def LoadGraph(filename):
-    g=Graph()
+    g=Graph(filename)
     F=open(filename)
     linea = F.readline().rstrip()
     while linea != "":
@@ -337,31 +345,6 @@ def FindShortestPath(g,originName,destinationName): #Se ha seguido el algoritmo 
                     AddNodeToPath(new, i)
                     paths.append(new) #Si no hay camino mejor a dicho vecino, añade el camino hasta este a la lista de caminos
 
-
-def LoadGraph(filename):
-    g=Graph()
-    F=open(filename)
-    linea = F.readline().rstrip()
-    while linea != "":
-        name = linea
-        linea = F.readline().rstrip()
-        x =  float(linea)
-        linea = F.readline().rstrip()
-        y = float(linea)
-        linea = F.readline().rstrip()
-        g.nodes.append(Node(name,x,y))
-    linea = F.readline().rstrip()
-    while linea != "":
-        name = linea
-        linea = F.readline().rstrip()
-        origin=linea
-        linea = F.readline().rstrip()
-        destination=linea
-        linea = F.readline().rstrip()
-        AddSegment(g, origin, destination)
-    F.close()
-    return g
-
 def DeleteSegment(g, s):
     i = 0
     found = False
@@ -378,4 +361,4 @@ def DeleteSegment(g, s):
         if destination in origin.neighbors:
             origin.neighbors.remove(destination)
         print("Longitud de segments:", len(g.segments))
-        SaveGraph(g, "graph")
+        SaveGraph(g)
