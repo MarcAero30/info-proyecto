@@ -41,6 +41,7 @@ def CreateGraph_1 ():
     return G
 print ("Probando el grafo...")
 G = CreateGraph_1 ()
+CreateNode(G,"M",20,0)
 PlotOG(G)
 PlotNode(G, "C")
 n = GetClosest(G,15,5)
