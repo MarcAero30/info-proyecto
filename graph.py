@@ -79,6 +79,7 @@ def AddSegment(g, nameOriginNode, nameDestinationNode):
     if found == 2:    
         g.segments.append(Segment(nameOriginNode+nameDestinationNode,OriginNode,DestinationNode))
         AddNeighbor(OriginNode,DestinationNode)
+        SaveGraph(g)
         return True
     else:
         return False
@@ -134,8 +135,8 @@ def PlotOG(g):
  #muestra los nodos y su nombre arriba a la derecha
  #Muestra los segmentos como flechas y la longitud de estos en el centro
 
-def Plot(g, root=None, label=None, x_interface=None, y_interface=None):  # root is the Tkinter window passed from the interface.py
-    fig, ax = plt.subplots()  # Create figure and axis
+def Plot(g, root=None, label=None, x_interface=None, y_interface=None):
+    fig, ax = plt.subplots(figsize=(10, 10))  # Reasonable default, will scale with window
 
     # Plot nodes
     for i in g.nodes:
@@ -159,15 +160,21 @@ def Plot(g, root=None, label=None, x_interface=None, y_interface=None):  # root 
     ax.grid(color='red', linestyle='dashed', linewidth=0.5)
     ax.set_title('Grafico con nodos y segmentos')
 
-    # Connect the on_click function to the button press event
-    if(not x_interface == None):
+    if root is not None:
         fig.canvas.mpl_connect('button_press_event', lambda event: on_click(event, g, label, x_interface, y_interface))
 
-        # Embed the plot in the Tkinter window
-        canvas = FigureCanvasTkAgg(fig, master=root)  # root is the Tkinter window
+        # Embed and expand the plot in the Tkinter window
+        canvas = FigureCanvasTkAgg(fig, master=root)
         canvas.draw()
-        canvas.get_tk_widget().grid(row=6, column=3)  # Pack the widget to make it visible
+        widget = canvas.get_tk_widget()
+        widget.grid(row=6, column=3, sticky='nsew')  # Expand to fill grid cell
+
+        # Make row 6 and column 3 expandable
+        root.grid_rowconfigure(6, weight=1)
+        root.grid_columnconfigure(3, weight=1)
+
     plt.close(fig)
+
 
 def PlotNode(g,nameOrigin):
     for i in g.nodes:

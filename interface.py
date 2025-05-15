@@ -5,6 +5,7 @@ import os
 from graph import (
     Plot,
     AddNode,
+    AddSegment,
     LoadGraph,
     PlotNode,
     DeleteNode,
@@ -21,7 +22,7 @@ from node import *
 # Crear ventana principal
 ventana = tk.Tk()
 ventana.title("Graph Viewer")
-ventana.geometry('1500x800')
+ventana.state('zoomed')
 ventana.configure(bg="#339fff")
 
 # Variables globales
@@ -88,7 +89,11 @@ def crear_nodo(nombre, x, y):
     print(g.name)
     show_graph(g.name)
 
-def open_create_window():
+def crear_segment(nombreOrigen, nombreDestino):
+    AddSegment(g, nombreOrigen, nombreDestino)
+    show_graph(g.name)
+
+def open_create_node_window():
     new_window = tk.Toplevel()
     new_window.title("Nuevo Nodo")
     new_window.geometry("300x200")
@@ -110,6 +115,23 @@ def open_create_window():
     btn_crear = tk.Button(new_window, text="Crear", command=lambda: crear_nodo(entry_nombre.get(), entry_x.get(), entry_y.get()))
     btn_crear.pack(pady=4)
 
+def open_create_segment_window():
+    new_window = tk.Toplevel()
+    new_window.title("Nuevo Segmento")
+    new_window.geometry("300x200")
+    tk.Label(new_window, text="Nodo de origen:").pack(pady=4)
+    entry_nombre = tk.Entry(new_window)
+    entry_nombre.pack(pady=2)
+
+    # Etiqueta y entrada para X
+    tk.Label(new_window, text="Nodo de destino").pack(pady=4)
+    entry_x = tk.Entry(new_window)
+    entry_x.pack(pady=4)
+
+    # Botón Crear
+    btn_crear = tk.Button(new_window, text="Crear", command=lambda: crear_segment(entry_nombre.get(), entry_x.get()))
+    btn_crear.pack(pady=4)
+
 menubar = tk.Menu(ventana)
 
 file_menu = tk.Menu(menubar, tearoff=0)
@@ -118,7 +140,8 @@ file_menu.add_command(label="Mostrar Graph 2", command=lambda: show_graph("graph
 file_menu.add_command(label="Abrir archivo", command=select_file)
 
 create_menu = tk.Menu(menubar, tearoff=0)
-create_menu.add_command(label="Crear nodo", command=open_create_window)
+create_menu.add_command(label="Crear nodo", command=open_create_node_window)
+create_menu.add_command(label="Crear segmento", command=open_create_segment_window)
 
 menubar.add_cascade(label="Archivo", menu=file_menu)
 menubar.add_cascade(label="Crear", menu=create_menu)
