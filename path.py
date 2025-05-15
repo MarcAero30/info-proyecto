@@ -45,19 +45,20 @@ def CostToNode(path,node):
         return length  #Suma la longitud de todos los segmentos
 
 def PlotPath (g, path):
-    for i in g.nodes: #Igual que en PlotNode
+    for i in g.nodes:
         plt.plot(i.x,i.y,"o",color = "gray",markersize=4)
-        plt.text(i.x+0.5,i.y+0.5,str(i.name),color='black', fontsize=6, weight='bold')
-    for i in g.segments: #Igual que en Plot
-        adj = (Distance(i.origin,i.destination)-0.6)/Distance(i.origin,i.destination)
-        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.5, head_length=0.6, fc='gray', ec='gray')
-        plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(Distance(i.origin,i.destination)//0.01/100),color='black', fontsize=6, weight='bold')
+        plt.text(i.x+0.04,i.y+0.04,str(i.name),color='gray', fontsize=6, weight='bold')    
     for i in path.nodes: 
-        plt.plot(i.x,i.y,"o",color = "blue",markersize=4)
+        plt.plot(i.x,i.y,"o",color = "black",markersize=4)
     for i in path.segments:
-        adj = (Distance(i.origin,i.destination)-0.6)/Distance(i.origin,i.destination)
-        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.5, head_length=0.6, fc='blue', ec='blue')
-    plt.axis([-5,25,-5,25])
+        adj = (Distance(i.origin,i.destination)-0.05)/Distance(i.origin,i.destination)
+        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
+        for k in g.segments:
+            if (k.origin == i.origin and k.destination == i.destination) or (k.origin == i.destination and k.destination == i.origin):
+                distancia = str(k.cost//0.01/100) 
+                break
+        plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,distancia,color='black', fontsize=6, weight='bold')
+    plt.axis("auto")
     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
     plt.title('Camino mas corto entre '+path.nodes[0].name+" y "+path.nodes[-1].name)
     plt.show()

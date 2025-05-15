@@ -122,17 +122,17 @@ def on_click(event, g, label, x_interface, y_interface):
         label.config(text=f"Selected Node: {closest_node.name}")
 
 def PlotOG(g):
-     for i in g.nodes:
-         plt.plot(i.x,i.y,"o",color = "red",markersize=4)
-         plt.text(i.x+0.5,i.y+0.5,str(i.name),color='green', fontsize=6, weight='bold')
-     for i in g.segments:
-         adj = (Distance(i.origin,i.destination)-0.6)/Distance(i.origin,i.destination)
-         plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.5, head_length=0.6, fc='blue', ec='blue')
-         plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(Distance(i.origin,i.destination)//0.01/100),color='black', fontsize=6, weight='bold')
-     plt.axis([-5,25,-5,25])
-     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
-     plt.title('Grafico con nodos y segmentos')
-     plt.show()
+    for i in g.segments:
+        adj = (Distance(i.origin,i.destination)-0.05)/Distance(i.origin,i.destination)
+        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
+        plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(i.cost//0.01/100),color='black', fontsize=6, weight='bold')
+    for i in g.nodes:
+        plt.plot(i.x,i.y,"o",color = "black",markersize=4)
+        plt.text(i.x+0.04,i.y+0.04,str(i.name),color='black', fontsize=6, weight='bold')
+    plt.axis('auto')
+    plt.grid(color='red', linestyle='dashed', linewidth=0.5)
+    plt.title('Grafico con nodos y segmentos')
+    plt.show()
  #muestra los nodos y su nombre arriba a la derecha
  #Muestra los segmentos como flechas y la longitud de estos en el centro
 
@@ -180,7 +180,7 @@ def Plot(g, root=None, label=None, x_interface=None, y_interface=None):
 def PlotNode(g,nameOrigin):
     for i in g.nodes:
         plt.plot(i.x,i.y,"o",color = "gray",markersize=4)
-        plt.text(i.x+0.5,i.y+0.5,str(i.name),color='black', fontsize=6, weight='bold')
+        plt.text(i.x+0.04,i.y+0.04,str(i.name),color='gray', fontsize=6, weight='bold')
     i=0
     found = False
     while i<len(g.nodes) and not found:
@@ -189,17 +189,19 @@ def PlotNode(g,nameOrigin):
         else:
             i+=1
     if found:
-        plt.plot(g.nodes[i].x,g.nodes[i].y,"o",color = "blue",markersize=4)
-        plt.text(g.nodes[i].x+0.5,g.nodes[i].y+0.5,str(g.nodes[i].name),color = "black", fontsize=6, weight='bold')
+        plt.plot(g.nodes[i].x,g.nodes[i].y,"o",color = "red",markersize=4)
+        plt.text(g.nodes[i].x+0.04,g.nodes[i].y+0.04,str(g.nodes[i].name),color = "red", fontsize=6, weight='bold')
     for j in g.nodes[i].neighbors:
-        adj = (Distance(g.nodes[i],j)-0.6)/Distance(g.nodes[i],j)
-        plt.plot(j.x,j.y,"o",color = "green",markersize=4)
-        plt.arrow(g.nodes[i].x,g.nodes[i].y,(j.x-g.nodes[i].x)*adj,(j.y-g.nodes[i].y)*adj, head_width=0.5, head_length=0.6, fc='red', ec='red')
-        plt.text((g.nodes[i].x+j.x)/2,(g.nodes[i].y+j.y)/2,str(Distance(g.nodes[i],j)//0.01/100),color='black', fontsize=6, weight='bold')
-        plt.text(j.x+0.5,j.y+0.5,j.name,color = "black", fontsize=6, weight='bold')
-    plt.axis([-5,25,-5,25])
+        adj = (Distance(g.nodes[i],j)-0.05)/Distance(g.nodes[i],j)
+        plt.arrow(g.nodes[i].x,g.nodes[i].y,(j.x-g.nodes[i].x)*adj,(j.y-g.nodes[i].y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
+        for k in g.segments:
+            if (k.origin == g.nodes[i] and k.destination == j) or (k.origin == j and k.destination == g.nodes[i]):
+                segment_distance = str(k.cost//0.01/100) 
+                break
+        plt.text((g.nodes[i].x+j.x)/2,(g.nodes[i].y+j.y)/2,str(segment_distance),color='black', fontsize=6, weight='bold')
+    plt.axis("auto")
     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
-    plt.title('Grafico de vecinos de '+nameOrigin)
+    plt.title('Grafico con los vecinos del nodo '+nameOrigin)
     plt.show()
 #Busca el nombre del nodo seleccionado en la lista de nodos y la posicion de este pasa a ser i
 #Plot del nodo y nombre
@@ -283,21 +285,25 @@ def Reachability(g,nodename):
         print("No se ha encontrado dicho nodo.")
 
 def PlotReachability(g,reach):
-    for j in g.nodes: #Igual que en PlotNode
-        plt.plot(j.x,j.y,"o",color = "gray",markersize=4)
-        plt.text(j.x+0.5,j.y+0.5,str(j.name),color='black', fontsize=6, weight='bold')
-        for i in j.neighbors: 
-            adj = (Distance(i,j)-0.6)/Distance(i,j)
-            plt.arrow(j.x,j.y,(i.x-j.x)*adj,(i.y-j.y)*adj, head_width=0.5, head_length=0.6, fc='gray', ec='gray')
-            plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(Distance(i,j)//0.01/100),color='black', fontsize=6, weight='bold')
-    for j in reach: #Similar a PlotNode pero con todos los elementos de la lista que devuelve reach
-        plt.plot(j.x,j.y,"o",color = "green",markersize=4)
-        plt.text(j.x+0.5,j.y+0.5,j.name,color = "black", fontsize=6, weight='bold')
-        for i in j.neighbors:
-            adj = (Distance(i,j)-0.6)/Distance(i,j)
-            plt.arrow(j.x,j.y,(i.x-j.x)*adj,(i.y-j.y)*adj, head_width=0.5, head_length=0.6, fc='green', ec='green')
-            plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(Distance(i,j)//0.01/100),color='black', fontsize=6, weight='bold')
-    plt.axis([-5,25,-5,25])
+    for i in g.segments:
+        adj = (Distance(i.origin,i.destination)-0.05)/Distance(i.origin,i.destination)
+        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.05, head_length=0.05, fc='gray', ec='gray')
+        plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(i.cost//0.01/100),color='gray', fontsize=6, weight='bold')
+    for i in g.nodes:
+        plt.plot(i.x,i.y,"o",color = "gray",markersize=4)
+        plt.text(i.x+0.04,i.y+0.04,str(i.name),color='gray', fontsize=6, weight='bold')
+    for i in reach: #Similar a PlotNode pero con todos los elementos de la lista que devuelve reach
+        plt.plot(i.x,i.y,"o",color = "black",markersize=4)
+        plt.text(i.x+0.04,i.y+0.04,i.name,color = "black", fontsize=6, weight='bold')
+        for j in i.neighbors:
+            adj = (Distance(i,j)-0.05)/Distance(i,j)
+            plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
+            for k in g.segments:
+                if (k.origin == i and k.destination == j) or (k.origin == j and k.destination == i):
+                    distancia = str(k.cost//0.01/100) 
+                    break
+            plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(distancia),color='black', fontsize=6, weight='bold')
+    plt.axis("auto")
     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
     plt.title('Grafico del alcance de '+reach[0].name)
     plt.show()

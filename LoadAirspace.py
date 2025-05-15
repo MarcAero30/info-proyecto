@@ -7,8 +7,8 @@ from graph import *
 from node import *
 from segment import*
 
-def LoadAirspace():
-    air = AirSpace()
+def LoadAirspace(name):
+    air = AirSpace(name)
     F = open("Cat_nav.txt")
     linea = F.readline()
     while linea != "":
@@ -20,7 +20,7 @@ def LoadAirspace():
     linea = F.readline()
     while linea != "":
         trozos = linea.rstrip().split(" ")
-        air.segments.append(NavSegment(trozos[0],trozos[1],trozos[2]))
+        air.segments.append(NavSegment(trozos[0],trozos[1],float(trozos[2])))
         linea = F.readline()    #Lee la lines y el primer elemento es origen, el destino y la distancia
 
     F = open("Cat_aer.txt")
@@ -40,11 +40,23 @@ def LoadAirspace():
         air.airports.append(airport)
     return air
 
-def ConversionGraph(AirSpace):
-    g=Graph()
-    for i in AirSpace.points:
-        g.nodes.append(Node(i.name,i.lat,i.lon))
-    for i in AirSpace.segments:
-        g.segments.append(Segment(i.origin+i.destination,i.origin,i.destination,i.distance))
-        
+def ConversionGraph(airspace):
+    g = Graph(airspace.name)
+    
+    num_to_node = {}
+    
+    for nav_point in airspace.points:
+        node = Node(nav_point.name,float(nav_point.lon),float(nav_point.lat))
+        g.nodes.append(node)
+
+        num_to_node[nav_point.num] = node
+    
+    for nav_segment in airspace.segments:
+        origin_node = num_to_node.get(nav_segment.origin)
+        destination_node = num_to_node.get(nav_segment.destination)
+        if origin_node and destination_node:
+            segment = Segment(origin_node.name+destination_node.name,origin_node,destination_node,distance=nav_segment.cost)
+            g.segments.append(segment)
+            AddNeighbor(origin_node,destination_node)
+    
     return g
