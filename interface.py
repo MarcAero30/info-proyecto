@@ -85,8 +85,8 @@ def get_input_delete_s():
 
 def crear_nodo(nombre, x, y):
     AddNode(g, Node(nombre, x, y))
-    show_graph("graph")
-
+    print(g.name)
+    show_graph(g.name)
 
 def open_create_window():
     new_window = tk.Toplevel()
