@@ -9,3 +9,8 @@ Versión 2 generada por Joan
 Versión 2 verificada por Marc C
 Versión 2 comunicada por Marc J
 URL del video: https://youtu.be/d7zb6vSwumg
+
+Versión 3 generada por Marc J
+Versión 3 verificada por Joan
+Versión 3 comunicada por Marc C
+URL del video: 

@@ -196,9 +196,9 @@ def PlotNode(g,nameOrigin):
         plt.arrow(g.nodes[i].x,g.nodes[i].y,(j.x-g.nodes[i].x)*adj,(j.y-g.nodes[i].y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
         for k in g.segments:
             if (k.origin == g.nodes[i] and k.destination == j) or (k.origin == j and k.destination == g.nodes[i]):
-                segment_distance = str(k.cost//0.01/100) 
+                distancia = str(k.cost//0.01/100) 
                 break
-        plt.text((g.nodes[i].x+j.x)/2,(g.nodes[i].y+j.y)/2,str(segment_distance),color='black', fontsize=6, weight='bold')
+        plt.text((g.nodes[i].x+j.x)/2,(g.nodes[i].y+j.y)/2,str(distancia),color='black', fontsize=6, weight='bold')
     plt.axis("auto")
     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
     plt.title('Grafico con los vecinos del nodo '+nameOrigin)
