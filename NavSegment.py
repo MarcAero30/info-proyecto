@@ -1,5 +1,6 @@
 class NavSegment:
-    def __init__(self,origin, destination,distance):
+    def __init__(self,name, origin, destination,distance):
+        self.name = name
         self.origin = origin
         self.destination = destination
-        self.distance = distance
+        self.cost = distance

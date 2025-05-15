@@ -74,7 +74,8 @@ def AddSegment(g, nameOriginNode, nameDestinationNode):
             DestinationNode =g.nodes[i]
             found+=1
         i+=1
-    if found == 2:    
+    if found == 2:
+            
         g.segments.append(Segment(nameOriginNode+nameDestinationNode,OriginNode,DestinationNode))
         AddNeighbor(OriginNode,DestinationNode)
         return True
