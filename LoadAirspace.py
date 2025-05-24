@@ -61,7 +61,7 @@ def ConversionGraph(airspace):
     
     return g
 
-def ExportToKML(g, filename):
+def ExportToKML(g, filename): #Creamos un nuevo archivo con el nombre dado y se escriben todos los datos con el formato dado en atenea
     F= open(filename+".kml","w")
 
     F.write("<?xml version='1.0' encoding='UTF-8'?>\n")
@@ -90,3 +90,36 @@ def ExportToKML(g, filename):
     F.write("  </Document>\n")
     F.write("</kml>\n")
     F.close()
+
+def NodeToKML(g,nodename): #Crear un grafo con un nodo y sus vecinos
+    nodeGraph = Graph(g.name+"_"+nodename)
+    for i in g.nodes:
+        if i.name==nodename:
+            node=i
+            break
+
+    if node == None:
+        return None
+
+    nodeGraph.nodes.append(node)
+    for i in node.neighbors:
+        nodeGraph.nodes.append(i)
+
+    for seg in g.segments:
+        if (seg.origin == node and seg.destination in node.neighbors) or (seg.destination == node and seg.origin in node.neighbors):nodeGraph.segments.append(seg)
+
+    return nodeGraph
+
+
+def ReachabilityToKML(g,reach): #Para pasar de la lista de nodos alcanzables a un grafo con dicha lista y sus segmentos
+    KMLreach = Graph(g.name + "reach")
+    KMLreach.nodes = reach
+
+    node_names = []
+    for n in reach:
+        node_names.append(n.name)   
+
+    for seg in g.segments:
+        if seg.origin.name in node_names and seg.destination.name in node_names:
+            KMLreach.segments.append(seg)
+    return KMLreach

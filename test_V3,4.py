@@ -19,9 +19,12 @@ cat = LoadAirspace("cat")
 
 
 G= ConversionGraph(cat)
-PlotOG(G)
-PlotNode(G,"GODOX")
-PlotReachability(G,Reachability(G,"GODOX"))
-PlotPath(G,FindShortestPath(G,"CAVES","ZZA"))
+#PlotOG(G)
+#PlotNode(G,"GODOX")
+#PlotReachability(G,Reachability(G,"GODOX"))
+#PlotPath(G,FindShortestPath(G,"CAVES","ZZA"))
 
 ExportToKML(G,"cat")
+ExportToKML(NodeToKML(G,"GODOX"),"GODOX")
+ExportToKML(ReachabilityToKML(G,Reachability(G,"GODOX")),"Reachability_GODOX")
+ExportToKML(FindShortestPath(G,"CAVES","ZZA"),"Shortest_CAVES-ZZA")
