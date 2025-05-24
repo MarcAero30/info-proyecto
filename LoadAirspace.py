@@ -60,3 +60,33 @@ def ConversionGraph(airspace):
             AddNeighbor(origin_node,destination_node)
     
     return g
+
+def ExportToKML(g, filename):
+    F= open(filename+".kml","w")
+
+    F.write("<?xml version='1.0' encoding='UTF-8'?>\n")
+    F.write("<kml xmlns='http://www.opengis.net/kml/2.2'>\n")
+    F.write("  <Document>\n")
+
+    for node in g.nodes:
+        F.write("    <Placemark>\n")
+        F.write(f"      <name>{node.name}</name>\n")
+        F.write("      <Point>\n")
+        F.write(f"        <coordinates>{node.x},{node.y},0</coordinates>\n")
+        F.write("      </Point>\n")
+        F.write("    </Placemark>\n")
+
+    for seg in g.segments:
+        F.write("    <Placemark>\n")
+        F.write(f"      <name>{seg.name}</name>\n")
+        F.write("      <LineString>\n")
+        F.write("        <tessellate>1</tessellate>\n")
+        F.write("        <coordinates>\n")
+        F.write(f"          {seg.origin.x},{seg.origin.y},0 {seg.destination.x},{seg.destination.y},0\n")
+        F.write("        </coordinates>\n")
+        F.write("      </LineString>\n")
+        F.write("    </Placemark>\n")
+
+    F.write("  </Document>\n")
+    F.write("</kml>\n")
+    F.close()

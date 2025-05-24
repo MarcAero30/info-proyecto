@@ -23,3 +23,5 @@ PlotOG(G)
 PlotNode(G,"GODOX")
 PlotReachability(G,Reachability(G,"GODOX"))
 PlotPath(G,FindShortestPath(G,"CAVES","ZZA"))
+
+ExportToKML(G,"cat")
