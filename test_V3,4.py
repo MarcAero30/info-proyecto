@@ -1,6 +1,7 @@
 from LoadAirspace import *
 from graph import*
-cat = LoadAirspace("cat","ECAC") #Cat/ Spain/ ECAC
+
+cat = LoadAirspace("cat","Cat") #Cat/ Spain/ ECAC
 #for i in cat.points:
  #   print(i.num)
   #  print(i.name)
