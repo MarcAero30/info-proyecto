@@ -1,6 +1,6 @@
 from LoadAirspace import *
 from graph import*
-cat = LoadAirspace("cat")
+cat = LoadAirspace("cat","ECAC") #Cat/ Spain/ ECAC
 #for i in cat.points:
  #   print(i.num)
   #  print(i.name)
@@ -19,7 +19,7 @@ cat = LoadAirspace("cat")
 
 
 G= ConversionGraph(cat)
-#PlotOG(G)
+PlotOG(G)
 #PlotNode(G,"GODOX")
 #PlotReachability(G,Reachability(G,"GODOX"))
 #PlotPath(G,FindShortestPath(G,"CAVES","ZZA"))

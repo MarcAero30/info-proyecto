@@ -7,23 +7,23 @@ from graph import *
 from node import *
 from segment import*
 
-def LoadAirspace(name):
+def LoadAirspace(name, place):
     air = AirSpace(name)
-    F = open("Cat_nav.txt")
+    F = open(place+"_nav.txt")
     linea = F.readline()
     while linea != "":
         trozos = linea.rstrip().split(" ")
         air.points.append(NavPoint(trozos[0],trozos[1],trozos[2],trozos[3]))
         linea = F.readline()    #Lee la lines y el primer elemento es el numero identificativo, el nombre, la latitud y la longitud
     
-    F = open("Cat_seg.txt")
+    F = open(place+"_seg.txt")
     linea = F.readline()
     while linea != "":
         trozos = linea.rstrip().split(" ")
         air.segments.append(NavSegment(trozos[0],trozos[1],float(trozos[2])))
         linea = F.readline()    #Lee la lines y el primer elemento es origen, el destino y la distancia
 
-    F = open("Cat_aer.txt")
+    F = open(place+"_aer.txt")
     linea = F.readline()
     while linea != "":
         airport = NavAirport (linea.rstrip()) #Añade el nombre del aeropuerto
