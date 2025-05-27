@@ -90,6 +90,21 @@ def show_reachability():
     alcanzables = Reachability(g, nodename)
     PlotReachability(g, Reachability(g, label.cget("text").split(": ")[1]))
 
+def open_filter_window():
+    new_window = tk.Toplevel()
+    new_window.title("Filtrar por distancia máxima")
+    new_window.geometry("300x100")
+    tk.Label(new_window, text="Distancia máxima entre puntos:").pack(pady=4)
+    entry_dist = tk.Entry(new_window)
+    entry_dist.pack(pady=2)
+
+    # Botón Filtrar
+    btn_filter = tk.Button(new_window, text="Filtrar", command=lambda: filter_distance(float(entry_dist.get())))
+    btn_filter.pack(pady=4)
+
+def filter_distance(dist):
+    PlotReachability(g, Reachability(g, label.cget("text").split(": ")[1], dist), dist)
+
 shortest_path = []  
 
 def show_shortest_path():
@@ -280,6 +295,7 @@ def export_shortest_path_kml():
     print(f"KML exportado: {filename}.kml")
     show_kml_mapas(f"{filename}.kml")
 
+
 menubar = tk.Menu(ventana)
 
 # Menú Archivo
@@ -305,6 +321,11 @@ create_menu = tk.Menu(menubar, tearoff=0)
 create_menu.add_command(label="Crear nodo", command=open_create_node_window)
 create_menu.add_command(label="Crear segmento", command=open_create_segment_window)
 menubar.add_cascade(label="Crear", menu=create_menu)
+
+# Menú Filtros
+filter_menu = tk.Menu(menubar, tearoff=0)
+filter_menu.add_command(label="Filtrar por distancia", command=open_filter_window)
+menubar.add_cascade(label="Filtros", menu=filter_menu)
 
 ventana.config(menu=menubar)
 

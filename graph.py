@@ -256,7 +256,7 @@ def LoadGraph(filename):
 #Lee tres lineas, correspondientes a los tres parametros de nodes y añade el node, asi hasta encontrarse una linea en blanco, que significa que a partir de ahi estamos hablande de segmentos
 #Lee tres lineas, correspondientes a los tres parametros de segments y añade el segmento mediante la funcion Addsegment, lo que a su misma vez añade los vecinos y las distancias de los nodos y segmentos correspondientemente
 
-def Reachability(g,nodename):
+def Reachability(g,nodename, max_dist=1000):
     i=0
     found = False
     while i <len(g.nodes) and not found:
@@ -274,9 +274,15 @@ def Reachability(g,nodename):
             for nodo in reach:
                 for vecino in nodo.neighbors:
                     if vecino not in reach:
-                        reach.append(vecino)
-                        new = True
-
+                        for segment in g.segments:
+                            if segment.origin == nodo and segment.destination == vecino:
+                                print(segment.origin)
+                                print(segment.cost)
+                                if(segment.cost <= max_dist):
+                                    print(vecino.name)
+                                    reach.append(vecino)
+                                    new = True
+        print(reach)
         return reach
     #Pasa por la lista de los nodos a los que llega y añade los vecinos (los nodos a los que se puede llegar directamente) de los nodos de esta lista si no estan ya en ella.
     #Si hace una pasada y no consigue añadir ningun nodo, habra añadido todos a los que se puede llegar y para
@@ -284,7 +290,7 @@ def Reachability(g,nodename):
     else:
         print("No se ha encontrado dicho nodo.")
 
-def PlotReachability(g,reach):
+def PlotReachability(g,reach, max_dist=1000):
     for i in g.segments:
         adj = (Distance(i.origin,i.destination)-0.05)/Distance(i.origin,i.destination)
         plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.05, head_length=0.05, fc='gray', ec='gray')
@@ -296,13 +302,14 @@ def PlotReachability(g,reach):
         plt.plot(i.x,i.y,"o",color = "black",markersize=4)
         plt.text(i.x+0.04,i.y+0.04,i.name,color = "black", fontsize=6, weight='bold')
         for j in i.neighbors:
-            adj = (Distance(i,j)-0.05)/Distance(i,j)
-            plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
-            for k in g.segments:
-                if (k.origin == i and k.destination == j) or (k.origin == j and k.destination == i):
-                    distancia = str(k.cost//0.01/100) 
-                    break
-            plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(distancia),color='black', fontsize=6, weight='bold')
+            if max_dist >= Distance(i, j):
+                adj = (Distance(i,j)-0.05)/Distance(i,j)
+                plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
+                for k in g.segments:
+                    if (k.origin == i and k.destination == j) or (k.origin == j and k.destination == i):
+                        distancia = str(k.cost//0.01/100) 
+                        break
+                plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(distancia),color='black', fontsize=6, weight='bold')
     plt.axis("auto")
     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
     plt.title('Grafico del alcance de '+reach[0].name)
