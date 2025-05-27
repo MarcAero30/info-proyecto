@@ -146,18 +146,18 @@ def Plot(g, root=None, label=None, x_interface=None, y_interface=None):
 
     # Plot segments
     for i in g.segments:
-        adj = (Distance(i.origin, i.destination) - 0.6) / Distance(i.origin, i.destination)
+        adj = (Distance(i.origin, i.destination) - 0.05) / Distance(i.origin, i.destination)
         ax.arrow(i.origin.x, i.origin.y,
                  (i.destination.x - i.origin.x) * adj,
                  (i.destination.y - i.origin.y) * adj,
-                 head_width=0.5, head_length=0.6, fc='blue', ec='blue')
+                 head_width=0.05, head_length=0.05, fc='blue', ec='blue')
         ax.text((i.origin.x + i.destination.x) / 2,
                 (i.origin.y + i.destination.y) / 2,
                 str(Distance(i.origin, i.destination) // 0.01 / 100),
                 color='black', fontsize=6, weight='bold')
 
     # Set axis limits and appearance
-    ax.axis([-5, 25, -5, 25])
+    ax.axis('auto')
     ax.grid(color='red', linestyle='dashed', linewidth=0.5)
     ax.set_title('Grafico con nodos y segmentos')
 

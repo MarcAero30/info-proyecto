@@ -21,9 +21,9 @@ cat = LoadAirspace("cat","Cat") #Cat/ Spain/ ECAC
 
 G= ConversionGraph(cat)
 PlotOG(G)
-#PlotNode(G,"GODOX")
-#PlotReachability(G,Reachability(G,"GODOX"))
-#PlotPath(G,FindShortestPath(G,"CAVES","ZZA"))
+PlotNode(G,"GODOX")
+PlotReachability(G,Reachability(G,"GODOX"))
+PlotPath(G,FindShortestPath(G,"CAVES","ZZA"))
 
 ExportToKML(G,"cat")
 ExportToKML(NodeToKML(G,"GODOX"),"GODOX")
