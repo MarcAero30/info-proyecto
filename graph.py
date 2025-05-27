@@ -76,7 +76,8 @@ def AddSegment(g, nameOriginNode, nameDestinationNode):
             DestinationNode =g.nodes[i]
             found+=1
         i+=1
-    if found == 2:    
+    if found == 2:
+            
         g.segments.append(Segment(nameOriginNode+nameDestinationNode,OriginNode,DestinationNode))
         AddNeighbor(OriginNode,DestinationNode)
         SaveGraph(g)
@@ -121,17 +122,17 @@ def on_click(event, g, label, x_interface, y_interface):
         label.config(text=f"Selected Node: {closest_node.name}")
 
 def PlotOG(g):
-     for i in g.nodes:
-         plt.plot(i.x,i.y,"o",color = "red",markersize=4)
-         plt.text(i.x+0.5,i.y+0.5,str(i.name),color='green', fontsize=6, weight='bold')
-     for i in g.segments:
-         adj = (Distance(i.origin,i.destination)-0.6)/Distance(i.origin,i.destination)
-         plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.5, head_length=0.6, fc='blue', ec='blue')
-         plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(Distance(i.origin,i.destination)//0.01/100),color='black', fontsize=6, weight='bold')
-     plt.axis([-5,25,-5,25])
-     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
-     plt.title('Grafico con nodos y segmentos')
-     plt.show()
+    for i in g.segments:
+        adj = (Distance(i.origin,i.destination)-0.05)/Distance(i.origin,i.destination)
+        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
+        plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(i.cost//0.01/100),color='black', fontsize=6, weight='bold')
+    for i in g.nodes:
+        plt.plot(i.x,i.y,"o",color = "black",markersize=4)
+        plt.text(i.x+0.04,i.y+0.04,str(i.name),color='black', fontsize=6, weight='bold')
+    plt.axis('auto')
+    plt.grid(color='red', linestyle='dashed', linewidth=0.5)
+    plt.title('Grafico con nodos y segmentos')
+    plt.show()
  #muestra los nodos y su nombre arriba a la derecha
  #Muestra los segmentos como flechas y la longitud de estos en el centro
 
@@ -145,18 +146,18 @@ def Plot(g, root=None, label=None, x_interface=None, y_interface=None):
 
     # Plot segments
     for i in g.segments:
-        adj = (Distance(i.origin, i.destination) - 0.6) / Distance(i.origin, i.destination)
+        adj = (Distance(i.origin, i.destination) - 0.05) / Distance(i.origin, i.destination)
         ax.arrow(i.origin.x, i.origin.y,
                  (i.destination.x - i.origin.x) * adj,
                  (i.destination.y - i.origin.y) * adj,
-                 head_width=0.5, head_length=0.6, fc='blue', ec='blue')
+                 head_width=0.05, head_length=0.05, fc='blue', ec='blue')
         ax.text((i.origin.x + i.destination.x) / 2,
                 (i.origin.y + i.destination.y) / 2,
                 str(Distance(i.origin, i.destination) // 0.01 / 100),
                 color='black', fontsize=6, weight='bold')
 
     # Set axis limits and appearance
-    ax.axis([-5, 25, -5, 25])
+    ax.axis('auto')
     ax.grid(color='red', linestyle='dashed', linewidth=0.5)
     ax.set_title('Grafico con nodos y segmentos')
 
@@ -179,7 +180,7 @@ def Plot(g, root=None, label=None, x_interface=None, y_interface=None):
 def PlotNode(g,nameOrigin):
     for i in g.nodes:
         plt.plot(i.x,i.y,"o",color = "gray",markersize=4)
-        plt.text(i.x+0.5,i.y+0.5,str(i.name),color='black', fontsize=6, weight='bold')
+        plt.text(i.x+0.04,i.y+0.04,str(i.name),color='gray', fontsize=6, weight='bold')
     i=0
     found = False
     while i<len(g.nodes) and not found:
@@ -188,17 +189,19 @@ def PlotNode(g,nameOrigin):
         else:
             i+=1
     if found:
-        plt.plot(g.nodes[i].x,g.nodes[i].y,"o",color = "blue",markersize=4)
-        plt.text(g.nodes[i].x+0.5,g.nodes[i].y+0.5,str(g.nodes[i].name),color = "black", fontsize=6, weight='bold')
+        plt.plot(g.nodes[i].x,g.nodes[i].y,"o",color = "red",markersize=4)
+        plt.text(g.nodes[i].x+0.04,g.nodes[i].y+0.04,str(g.nodes[i].name),color = "red", fontsize=6, weight='bold')
     for j in g.nodes[i].neighbors:
-        adj = (Distance(g.nodes[i],j)-0.6)/Distance(g.nodes[i],j)
-        plt.plot(j.x,j.y,"o",color = "green",markersize=4)
-        plt.arrow(g.nodes[i].x,g.nodes[i].y,(j.x-g.nodes[i].x)*adj,(j.y-g.nodes[i].y)*adj, head_width=0.5, head_length=0.6, fc='red', ec='red')
-        plt.text((g.nodes[i].x+j.x)/2,(g.nodes[i].y+j.y)/2,str(Distance(g.nodes[i],j)//0.01/100),color='black', fontsize=6, weight='bold')
-        plt.text(j.x+0.5,j.y+0.5,j.name,color = "black", fontsize=6, weight='bold')
-    plt.axis([-5,25,-5,25])
+        adj = (Distance(g.nodes[i],j)-0.05)/Distance(g.nodes[i],j)
+        plt.arrow(g.nodes[i].x,g.nodes[i].y,(j.x-g.nodes[i].x)*adj,(j.y-g.nodes[i].y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
+        for k in g.segments:
+            if (k.origin == g.nodes[i] and k.destination == j) or (k.origin == j and k.destination == g.nodes[i]):
+                distancia = str(k.cost//0.01/100) 
+                break
+        plt.text((g.nodes[i].x+j.x)/2,(g.nodes[i].y+j.y)/2,str(distancia),color='black', fontsize=6, weight='bold')
+    plt.axis("auto")
     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
-    plt.title('Grafico de vecinos de '+nameOrigin)
+    plt.title('Grafico con los vecinos del nodo '+nameOrigin)
     plt.show()
 #Busca el nombre del nodo seleccionado en la lista de nodos y la posicion de este pasa a ser i
 #Plot del nodo y nombre
@@ -282,67 +285,81 @@ def Reachability(g,nodename):
         print("No se ha encontrado dicho nodo.")
 
 def PlotReachability(g,reach):
-    for j in g.nodes: #Igual que en PlotNode
-        plt.plot(j.x,j.y,"o",color = "gray",markersize=4)
-        plt.text(j.x+0.5,j.y+0.5,str(j.name),color='black', fontsize=6, weight='bold')
-        for i in j.neighbors: 
-            adj = (Distance(i,j)-0.6)/Distance(i,j)
-            plt.arrow(j.x,j.y,(i.x-j.x)*adj,(i.y-j.y)*adj, head_width=0.5, head_length=0.6, fc='gray', ec='gray')
-            plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(Distance(i,j)//0.01/100),color='black', fontsize=6, weight='bold')
-    for j in reach: #Similar a PlotNode pero con todos los elementos de la lista que devuelve reach
-        plt.plot(j.x,j.y,"o",color = "green",markersize=4)
-        plt.text(j.x+0.5,j.y+0.5,j.name,color = "black", fontsize=6, weight='bold')
-        for i in j.neighbors:
-            adj = (Distance(i,j)-0.6)/Distance(i,j)
-            plt.arrow(j.x,j.y,(i.x-j.x)*adj,(i.y-j.y)*adj, head_width=0.5, head_length=0.6, fc='green', ec='green')
-            plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(Distance(i,j)//0.01/100),color='black', fontsize=6, weight='bold')
-    plt.axis([-5,25,-5,25])
+    for i in g.segments:
+        adj = (Distance(i.origin,i.destination)-0.05)/Distance(i.origin,i.destination)
+        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.05, head_length=0.05, fc='gray', ec='gray')
+        plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(i.cost//0.01/100),color='gray', fontsize=6, weight='bold')
+    for i in g.nodes:
+        plt.plot(i.x,i.y,"o",color = "gray",markersize=4)
+        plt.text(i.x+0.04,i.y+0.04,str(i.name),color='gray', fontsize=6, weight='bold')
+    for i in reach: #Similar a PlotNode pero con todos los elementos de la lista que devuelve reach
+        plt.plot(i.x,i.y,"o",color = "black",markersize=4)
+        plt.text(i.x+0.04,i.y+0.04,i.name,color = "black", fontsize=6, weight='bold')
+        for j in i.neighbors:
+            adj = (Distance(i,j)-0.05)/Distance(i,j)
+            plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
+            for k in g.segments:
+                if (k.origin == i and k.destination == j) or (k.origin == j and k.destination == i):
+                    distancia = str(k.cost//0.01/100) 
+                    break
+            plt.text((i.x+j.x)/2,(i.y+j.y)/2,str(distancia),color='black', fontsize=6, weight='bold')
+    plt.axis("auto")
     plt.grid(color='red', linestyle='dashed', linewidth=0.5)
     plt.title('Grafico del alcance de '+reach[0].name)
     plt.show()
 
-def FindShortestPath(g,originName,destinationName): #Se ha seguido el algoritmo sugerido en atenea
-    i=0
+def FindShortestPath(g, originName, destinationName):  # Se ha seguido el algoritmo sugerido en atenea
+    origin = None
+    destination = None
     found = 0
-    while i<len(g.nodes) and found<2:
+    i = 0
+
+    while i < len(g.nodes) and found < 2:
         if originName == g.nodes[i].name:
-            found+=1
+            found += 1
             origin = g.nodes[i]
         elif destinationName == g.nodes[i].name:
-            found+=1
+            found += 1
             destination = g.nodes[i]
-        i+=1
+        i += 1
+
+    # Si no se encontraron ambos nodos, retorna None
+    if origin is None or destination is None:
+        print(f"Error: Nodo origen '{originName}' o destino '{destinationName}' no encontrado en el grafo.")
+        return None
 
     paths = [Path()]
-    AddNodeToPath(paths[0],origin)
+    AddNodeToPath(paths[0], origin)
 
-    while len(paths)>0:
+    while len(paths) > 0:
         lowest = paths[0]
-        for i in paths:
-            if PathLength(i)+Distance(i.nodes[-1],destination)< PathLength(lowest)+Distance(lowest.nodes[-1],destination):
-                lowest=i
-        paths.remove(lowest) #Busca el nodo con la menor distancia estimada y se lo guarda aparte como lowest borrandolo de la lista
+        for path in paths:
+            if PathLength(path) + Distance(path.nodes[-1], destination) < PathLength(lowest) + Distance(lowest.nodes[-1], destination):
+                lowest = path
+        paths.remove(lowest)  # Busca el nodo con la menor distancia estimada y lo guarda aparte
 
-        for i in lowest.nodes[-1].neighbors:
-            if i == destination:
-                AddNodeToPath(lowest,i) #Si ya ha llegado al destino
-                return lowest #Como lo devolvemos ya, la funcion acaba por lo que no hace falta comprobar en el while si ya se ha encontrado el camino
-            elif i not in lowest.nodes: #Si no esta ya en el camino, porque si no estariamos dando vueltas
+        for neighbor in lowest.nodes[-1].neighbors:
+            if neighbor == destination:
+                AddNodeToPath(lowest, neighbor)  # Si ya ha llegado al destino
+                return lowest
+            elif neighbor not in lowest.nodes:  # Evita ciclos
                 iteraciones = 0
-                coste=PathLength(lowest)+Distance(lowest.nodes[-1],i)
-                for j in paths:
-                    if i in j.nodes:
-                        if coste>=PathLength(j):
-                            iteraciones+=1 #Si iteraciones=n, ha encontrado n caminos mejores ya existentes en la lista de caminos hasta el nodo que estamos comprobando
+                coste = PathLength(lowest) + Distance(lowest.nodes[-1], neighbor)
+                for p in paths:
+                    if neighbor in p.nodes:
+                        if coste >= PathLength(p):
+                            iteraciones += 1
                         else:
-                            paths.remove(j) #Si esta en uno de los caminos de la lista, pero este nuevo camino es mas corto, que elimine el que ya estaba (que era mas largo)
-                
-                if iteraciones<1:
-                    new = Path()
-                    new.nodes=list(lowest.nodes)
-                    new.segments=list(lowest.segments)
-                    AddNodeToPath(new, i)
-                    paths.append(new) #Si no hay camino mejor a dicho vecino, añade el camino hasta este a la lista de caminos
+                            paths.remove(p)
+
+                if iteraciones < 1:
+                    new_path = Path()
+                    new_path.nodes = list(lowest.nodes)
+                    new_path.segments = list(lowest.segments)
+                    AddNodeToPath(new_path, neighbor)
+                    paths.append(new_path)
+    # Si no se encontró camino
+    return None
 
 def DeleteSegment(g, s):
     i = 0
@@ -361,3 +378,43 @@ def DeleteSegment(g, s):
             origin.neighbors.remove(destination)
         print("Longitud de segments:", len(g.segments))
         SaveGraph(g)
+def CreateGraph_1 ():
+    G = Graph("graph.txt")
+    AddNode(G, Node("A",1,20))
+    AddNode(G, Node("B",8,17))
+    AddNode(G, Node("C",15,20))
+    AddNode(G, Node("D",18,15))
+    AddNode(G, Node("E",2,4))
+    AddNode(G, Node("F",6,5))
+    AddNode(G, Node("G",12,12))
+    AddNode(G, Node("H",10,3))
+    AddNode(G, Node("I",19,1))
+    AddNode(G, Node("J",13,5))
+    AddNode(G, Node("K",3,15))
+    AddNode(G, Node("L",4,10))
+    AddSegment(G,"A","B")
+    AddSegment(G,"A","E")
+    AddSegment(G,"A","K")
+    AddSegment(G,"B","A")
+    AddSegment(G,"B","C")
+    AddSegment(G,"B","F")
+    AddSegment(G,"B","K")
+    AddSegment(G,"B","G")
+    AddSegment(G,"C","D")
+    AddSegment(G,"C","G")
+    AddSegment(G,"D","G")
+    AddSegment(G,"D","H")
+    AddSegment(G,"D","I")
+    AddSegment(G,"E","F")
+    AddSegment(G,"F","L")
+    AddSegment(G,"G","B")
+    AddSegment(G,"G","F")
+    AddSegment(G,"G","H")
+    AddSegment(G,"I","D")
+    AddSegment(G,"I","J")
+    AddSegment(G,"J","I")
+    AddSegment(G,"K","A")
+    AddSegment(G,"K","L")
+    AddSegment(G,"L","K")
+    AddSegment(G,"L","F")
+    return G

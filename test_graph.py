@@ -1,6 +1,6 @@
 from graph import *
 def CreateGraph_1 ():
-    G = Graph()
+    G = Graph("graph.txt")
     AddNode(G, Node("A",1,20))
     AddNode(G, Node("B",8,17))
     AddNode(G, Node("C",15,20))
@@ -48,7 +48,7 @@ n = GetClosest(G,15,5)
 print ("El mas cercano a dicho punto es: ",n.name) # La respuesta debe ser J
 n = GetClosest(G,8,19)
 print ("El mas cercano a dicho punto es: ",n.name) # La respuesta debe ser B
-SaveGraph(G,"graph")
+SaveGraph(G)
 H = LoadGraph("graph3.txt")
 #PlotOG(H)
 #PlotNode(H, "I")
@@ -57,5 +57,5 @@ reach = Reachability(H,"A")
 PlotReachability(H,reach)
 
 shortest = FindShortestPath(G,"A","D")
-if shortest != None:
-    PlotPath(G,shortest)
+PlotPath(G,shortest)
+
