@@ -1,10 +1,6 @@
 from graph import *
 def CreateGraph_1 ():
-<<<<<<< HEAD
     G = Graph("graph.txt")
-=======
-    G = Graph("graph")
->>>>>>> 2bc4fcadb5e8a993654eb9004951f497ce85b521
     AddNode(G, Node("A",1,20))
     AddNode(G, Node("B",8,17))
     AddNode(G, Node("C",15,20))

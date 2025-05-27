@@ -61,12 +61,9 @@ zaaaa
 Hola
 5.0
 0.0
-<<<<<<< HEAD
 JJJ
 10.0
 0.0
-=======
->>>>>>> 2bc4fcadb5e8a993654eb9004951f497ce85b521
 
 BC
 B
