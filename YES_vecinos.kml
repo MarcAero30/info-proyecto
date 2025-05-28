@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+  <Document>
+    <Placemark>
+      <name>YES</name>
+      <Point>
+        <coordinates>-2.3525,38.3608333333,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>BLN</name>
+      <Point>
+        <coordinates>-3.625,38.1525,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>TOSTO</name>
+      <Point>
+        <coordinates>-1.9361111111,38.3641666667,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>XEBAR</name>
+      <Point>
+        <coordinates>-2.0927777778,38.5211111111,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>BLNYES</name>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -3.625,38.1525,0 -2.3525,38.3608333333,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>TOSTOYES</name>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -1.9361111111,38.3641666667,0 -2.3525,38.3608333333,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>XEBARYES</name>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -2.0927777778,38.5211111111,0 -2.3525,38.3608333333,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>YESBLN</name>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -2.3525,38.3608333333,0 -3.625,38.1525,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>YESTOSTO</name>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -2.3525,38.3608333333,0 -1.9361111111,38.3641666667,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>YESXEBAR</name>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -2.3525,38.3608333333,0 -2.0927777778,38.5211111111,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>

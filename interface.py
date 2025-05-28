@@ -16,7 +16,8 @@ from graph import (
     Reachability,
     FindShortestPath,
     DeleteSegment,
-    CreateGraph_1
+    CreateGraph_1,
+    filtrar_por_distancia
 )
 from LoadAirspace import (
     LoadAirspace,
@@ -107,30 +108,33 @@ def show_reachability():
         messagebox.showerror("Error", "Ha surgido un error")
 
 def open_filter_window():
-    try:
         new_window = tk.Toplevel()
-        new_window.title("Filtrar por distancia máxima")
-        new_window.geometry("300x150")
-        tk.Label(new_window, text="Distancia mínima entre puntos:").pack(pady=4)
-        entry_min_dist = tk.Entry(new_window)
-        entry_min_dist.pack(pady=2)
-        tk.Label(new_window, text="Distancia máxima entre puntos:").pack(pady=4)
-        entry_dist = tk.Entry(new_window)
-        entry_dist.pack(pady=2)
+        new_window.title("Filtrar por distancia")
+        new_window.geometry("300x160")
 
-        # Botón Filtrar
-        btn_filter = tk.Button(new_window, text="Filtrar", command=lambda: filter_distance((entry_dist.get()), (entry_min_dist.get())))
-        btn_filter.pack(pady=4)
-    except:
-        messagebox.showerror("Error", "Ha surgido un error")
+        tk.Label(new_window, text="Distancia mínima:").pack(pady=4)
+        entry_min = tk.Entry(new_window)
+        entry_min.pack()
 
-def filter_distance(dist, min_dist):
-    try:
-        PlotReachability(g, Reachability(g, label.cget("text").split(": ")[1], float(dist), float(min_dist)), float(dist), float(min_dist))
-    except:
-        messagebox.showerror("Error", "Ha surgido un error")
+        tk.Label(new_window, text="Distancia máxima:").pack(pady=4)
+        entry_max = tk.Entry(new_window)
+        entry_max.pack()
+
+        def aplicar_filtro():
+            try:
+                min_dist = float(entry_min.get())
+                max_dist = float(entry_max.get())
+                if min_dist > max_dist:
+                    messagebox.showerror("Error", "La distancia mínima no puede ser mayor que la máxima.")
+                    return
+                filtrar_por_distancia(g, min_dist, max_dist)
+                new_window.destroy()
+            except:
+                messagebox.showerror("Error", "Ha introducido valores numericos invalodos o no ha cargado debidamente un grafo")
+
+        tk.Button(new_window, text="Aplicar filtro", command=aplicar_filtro).pack(pady=10)
+
 shortest_path = []  
-
 def show_shortest_path():
     try:
         global shortest_path
@@ -287,6 +291,9 @@ menubar = tk.Menu(ventana)
 
 def exportar_reachability_kml():
     try:
+        global alcanzables
+        nodename = label.cget("text").split(": ")[1]
+        alcanzables = Reachability(g, nodename)
         if not alcanzables:
             print("No se ha podido generar la lista de alcanzables")
             messagebox.showerror("Error", "No se ha podido generar la lista de alcanzables")
