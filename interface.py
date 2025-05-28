@@ -412,6 +412,7 @@ def mostrar_selector_espacio_aereo():
 
 
 menubar = tk.Menu(ventana)
+crear_grafo_vacio()
 
 # Menú Archivo
 file_menu = tk.Menu(menubar, tearoff=0)
