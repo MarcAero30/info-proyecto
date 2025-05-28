@@ -110,20 +110,23 @@ def open_filter_window():
     try:
         new_window = tk.Toplevel()
         new_window.title("Filtrar por distancia máxima")
-        new_window.geometry("300x100")
+        new_window.geometry("300x150")
+        tk.Label(new_window, text="Distancia mínima entre puntos:").pack(pady=4)
+        entry_min_dist = tk.Entry(new_window)
+        entry_min_dist.pack(pady=2)
         tk.Label(new_window, text="Distancia máxima entre puntos:").pack(pady=4)
         entry_dist = tk.Entry(new_window)
         entry_dist.pack(pady=2)
 
         # Botón Filtrar
-        btn_filter = tk.Button(new_window, text="Filtrar", command=lambda: filter_distance(float(entry_dist.get())))
+        btn_filter = tk.Button(new_window, text="Filtrar", command=lambda: filter_distance((entry_dist.get()), (entry_min_dist.get())))
         btn_filter.pack(pady=4)
     except:
         messagebox.showerror("Error", "Ha surgido un error")
 
-def filter_distance(dist):
+def filter_distance(dist, min_dist):
     try:
-        PlotReachability(g, Reachability(g, label.cget("text").split(": ")[1], dist), dist)
+        PlotReachability(g, Reachability(g, label.cget("text").split(": ")[1], float(dist), float(min_dist)), float(dist), float(min_dist))
     except:
         messagebox.showerror("Error", "Ha surgido un error")
 shortest_path = []  

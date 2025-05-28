@@ -280,7 +280,7 @@ def LoadGraph(filename):
 #Lee tres lineas, correspondientes a los tres parametros de nodes y añade el node, asi hasta encontrarse una linea en blanco, que significa que a partir de ahi estamos hablande de segmentos
 #Lee tres lineas, correspondientes a los tres parametros de segments y añade el segmento mediante la funcion Addsegment, lo que a su misma vez añade los vecinos y las distancias de los nodos y segmentos correspondientemente
 
-def Reachability(g,nodename, max_dist=1000):
+def Reachability(g,nodename, max_dist=1000, min_dist=0):
     i=0
     found = False
     while i <len(g.nodes) and not found:
@@ -302,7 +302,7 @@ def Reachability(g,nodename, max_dist=1000):
                             if segment.origin == nodo and segment.destination == vecino:
                                 print(segment.origin)
                                 print(segment.cost)
-                                if(segment.cost <= max_dist):
+                                if(segment.cost <= max_dist and segment.cost >= min_dist):
                                     print(vecino.name)
                                     reach.append(vecino)
                                     new = True
@@ -314,7 +314,7 @@ def Reachability(g,nodename, max_dist=1000):
     else:
         print("No se ha encontrado dicho nodo.")
 
-def PlotReachability(g,reach, max_dist=1000):
+def PlotReachability(g,reach, max_dist=1000, min_dist=0):
     min_x = min(node.x for node in g.nodes)
     max_x = max(node.x for node in g.nodes)
     min_y = min(node.y for node in g.nodes)
@@ -334,7 +334,7 @@ def PlotReachability(g,reach, max_dist=1000):
         plt.plot(i.x,i.y,"o",color = "black",markersize=4)
         plt.text(i.x+0.04,i.y+0.04,i.name,color = "black", fontsize=6, weight='bold')
         for j in i.neighbors:
-            if max_dist >= Distance(i, j):
+            if max_dist >= Distance(i, j) and min_dist <= Distance(i, j):
                 adj = (Distance(i,j)-arrow)/Distance(i,j)
                 plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.05, head_length=0.05, fc='blue', ec='blue')
                 for k in g.segments:
