@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+  <Document>
+    <Placemark>
+      <name>A</name>
+      <Point>
+        <coordinates>1.0,20.0,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>B</name>
+      <Point>
+        <coordinates>8.0,17.0,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>E</name>
+      <Point>
+        <coordinates>2.0,4.0,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>K</name>
+      <Point>
+        <coordinates>3.0,15.0,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>AB</name>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          1.0,20.0,0 8.0,17.0,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>AE</name>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          1.0,20.0,0 2.0,4.0,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>AK</name>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          1.0,20.0,0 3.0,15.0,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>BA</name>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          8.0,17.0,0 1.0,20.0,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>KA</name>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          3.0,15.0,0 1.0,20.0,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>

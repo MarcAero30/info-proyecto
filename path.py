@@ -45,14 +45,22 @@ def CostToNode(path,node):
         return length  #Suma la longitud de todos los segmentos
 
 def PlotPath (g, path):
+    min_x = min(node.x for node in g.nodes)
+    max_x = max(node.x for node in g.nodes)
+    min_y = min(node.y for node in g.nodes)
+    max_y = max(node.y for node in g.nodes)
+    width = max_x - min_x
+    height = max_y - min_y
+    arrow = max(width, height) * 0.015
+
     for i in g.nodes:
         plt.plot(i.x,i.y,"o",color = "gray",markersize=4)
         plt.text(i.x+0.04,i.y+0.04,str(i.name),color='gray', fontsize=6, weight='bold')    
     for i in path.nodes: 
         plt.plot(i.x,i.y,"o",color = "black",markersize=4)
     for i in path.segments:
-        adj = (Distance(i.origin,i.destination)-0.05)/Distance(i.origin,i.destination)
-        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
+        adj = (Distance(i.origin,i.destination)-arrow)/Distance(i.origin,i.destination)
+        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=arrow, head_length=arrow, fc='blue', ec='blue')
         for k in g.segments:
             if (k.origin == i.origin and k.destination == i.destination) or (k.origin == i.destination and k.destination == i.origin):
                 distancia = str(k.cost//0.01/100) 

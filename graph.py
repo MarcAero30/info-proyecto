@@ -122,9 +122,17 @@ def on_click(event, g, label, x_interface, y_interface):
         label.config(text=f"Selected Node: {closest_node.name}")
 
 def PlotOG(g):
+    min_x = min(node.x for node in g.nodes)
+    max_x = max(node.x for node in g.nodes)
+    min_y = min(node.y for node in g.nodes)
+    max_y = max(node.y for node in g.nodes)
+    width = max_x - min_x
+    height = max_y - min_y
+    arrow = max(width, height) * 0.015
+
     for i in g.segments:
-        adj = (Distance(i.origin,i.destination)-0.05)/Distance(i.origin,i.destination)
-        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
+        adj = (Distance(i.origin,i.destination)-arrow)/Distance(i.origin,i.destination)
+        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=arrow, head_length=arrow, fc='blue', ec='blue')
         plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(i.cost//0.01/100),color='black', fontsize=6, weight='bold')
     for i in g.nodes:
         plt.plot(i.x,i.y,"o",color = "black",markersize=4)
@@ -138,22 +146,30 @@ def PlotOG(g):
 
 def Plot(g, root=None, label=None, x_interface=None, y_interface=None):
     fig, ax = plt.subplots(figsize=(10, 10))  # Reasonable default, will scale with window
+    if g.nodes != []:
+        min_x = min(node.x for node in g.nodes)
+        max_x = max(node.x for node in g.nodes)
+        min_y = min(node.y for node in g.nodes)
+        max_y = max(node.y for node in g.nodes)
+        width = max_x - min_x
+        height = max_y - min_y
+        arrow = max(width, height) * 0.015
 
     # Plot nodes
     for i in g.nodes:
-        ax.plot(i.x, i.y, "o", color="red", markersize=4)
-        ax.text(i.x + 0.5, i.y + 0.5, str(i.name), color='green', fontsize=6, weight='bold')
+        ax.plot(i.x, i.y, "o", color="black", markersize=4)
+        ax.text(i.x + 0.04, i.y + 0.04, str(i.name), color='black', fontsize=6, weight='bold')
 
     # Plot segments
     for i in g.segments:
-        adj = (Distance(i.origin, i.destination) - 0.05) / Distance(i.origin, i.destination)
+        adj = (Distance(i.origin, i.destination) - arrow) / Distance(i.origin, i.destination)
         ax.arrow(i.origin.x, i.origin.y,
                  (i.destination.x - i.origin.x) * adj,
                  (i.destination.y - i.origin.y) * adj,
-                 head_width=0.05, head_length=0.05, fc='blue', ec='blue')
+                 head_width=arrow, head_length=arrow, fc='blue', ec='blue')
         ax.text((i.origin.x + i.destination.x) / 2,
                 (i.origin.y + i.destination.y) / 2,
-                str(Distance(i.origin, i.destination) // 0.01 / 100),
+                str(i.cost//0.01/100),
                 color='black', fontsize=6, weight='bold')
 
     # Set axis limits and appearance
@@ -178,6 +194,14 @@ def Plot(g, root=None, label=None, x_interface=None, y_interface=None):
 
 
 def PlotNode(g,nameOrigin):
+    min_x = min(node.x for node in g.nodes)
+    max_x = max(node.x for node in g.nodes)
+    min_y = min(node.y for node in g.nodes)
+    max_y = max(node.y for node in g.nodes)
+    width = max_x - min_x
+    height = max_y - min_y
+    arrow = max(width, height) * 0.015
+
     for i in g.nodes:
         plt.plot(i.x,i.y,"o",color = "gray",markersize=4)
         plt.text(i.x+0.04,i.y+0.04,str(i.name),color='gray', fontsize=6, weight='bold')
@@ -192,8 +216,8 @@ def PlotNode(g,nameOrigin):
         plt.plot(g.nodes[i].x,g.nodes[i].y,"o",color = "red",markersize=4)
         plt.text(g.nodes[i].x+0.04,g.nodes[i].y+0.04,str(g.nodes[i].name),color = "red", fontsize=6, weight='bold')
     for j in g.nodes[i].neighbors:
-        adj = (Distance(g.nodes[i],j)-0.05)/Distance(g.nodes[i],j)
-        plt.arrow(g.nodes[i].x,g.nodes[i].y,(j.x-g.nodes[i].x)*adj,(j.y-g.nodes[i].y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
+        adj = (Distance(g.nodes[i],j)-arrow)/Distance(g.nodes[i],j)
+        plt.arrow(g.nodes[i].x,g.nodes[i].y,(j.x-g.nodes[i].x)*adj,(j.y-g.nodes[i].y)*adj, head_width=arrow, head_length=arrow, fc='blue', ec='blue')
         for k in g.segments:
             if (k.origin == g.nodes[i] and k.destination == j) or (k.origin == j and k.destination == g.nodes[i]):
                 distancia = str(k.cost//0.01/100) 
@@ -291,9 +315,17 @@ def Reachability(g,nodename, max_dist=1000):
         print("No se ha encontrado dicho nodo.")
 
 def PlotReachability(g,reach, max_dist=1000):
+    min_x = min(node.x for node in g.nodes)
+    max_x = max(node.x for node in g.nodes)
+    min_y = min(node.y for node in g.nodes)
+    max_y = max(node.y for node in g.nodes)
+    width = max_x - min_x
+    height = max_y - min_y
+    arrow = max(width, height) * 0.015
+
     for i in g.segments:
-        adj = (Distance(i.origin,i.destination)-0.05)/Distance(i.origin,i.destination)
-        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=0.05, head_length=0.05, fc='gray', ec='gray')
+        adj = (Distance(i.origin,i.destination)-arrow)/Distance(i.origin,i.destination)
+        plt.arrow(i.origin.x,i.origin.y,(i.destination.x-i.origin.x)*adj,(i.destination.y-i.origin.y)*adj, head_width=arrow, head_length=arrow, fc='gray', ec='gray')
         plt.text((i.origin.x+i.destination.x)/2,(i.origin.y+i.destination.y)/2,str(i.cost//0.01/100),color='gray', fontsize=6, weight='bold')
     for i in g.nodes:
         plt.plot(i.x,i.y,"o",color = "gray",markersize=4)
@@ -303,8 +335,8 @@ def PlotReachability(g,reach, max_dist=1000):
         plt.text(i.x+0.04,i.y+0.04,i.name,color = "black", fontsize=6, weight='bold')
         for j in i.neighbors:
             if max_dist >= Distance(i, j):
-                adj = (Distance(i,j)-0.05)/Distance(i,j)
-                plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.05, head_length=0.05, fc='cyan', ec='cyan')
+                adj = (Distance(i,j)-arrow)/Distance(i,j)
+                plt.arrow(i.x,i.y,(j.x-i.x)*adj,(j.y-i.y)*adj, head_width=0.05, head_length=0.05, fc='blue', ec='blue')
                 for k in g.segments:
                     if (k.origin == i and k.destination == j) or (k.origin == j and k.destination == i):
                         distancia = str(k.cost//0.01/100) 
