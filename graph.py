@@ -417,6 +417,7 @@ def DeleteSegment(g, s):
             origin.neighbors.remove(destination)
         print("Longitud de segments:", len(g.segments))
         SaveGraph(g)
+
 def CreateGraph_1 ():
     G = Graph("graph.txt")
     AddNode(G, Node("A",1,20))
@@ -457,3 +458,40 @@ def CreateGraph_1 ():
     AddSegment(G,"L","K")
     AddSegment(G,"L","F")
     return G
+
+def filtrar_por_distancia(grafo, min_dist, max_dist):
+
+    fig, ax = plt.subplots(figsize=(10, 10))
+
+    arrow_size = 0.015 * max(
+        max(node.x for node in grafo.nodes) - min(node.x for node in grafo.nodes),
+        max(node.y for node in grafo.nodes) - min(node.y for node in grafo.nodes)
+    )
+
+    # Dibujar todos los nodos
+    for node in grafo.nodes:
+        ax.plot(node.x, node.y, "o", color="gray", markersize=4)
+        ax.text(node.x + 0.04, node.y + 0.04, node.name, color='gray', fontsize=6)
+
+    # Dibujar solo los segmentos en el rango de distancia
+    for seg in grafo.segments:
+        if min_dist <= seg.cost <= max_dist:
+            adj = (seg.cost - arrow_size) / seg.cost
+            ax.arrow(
+                seg.origin.x, seg.origin.y,
+                (seg.destination.x - seg.origin.x) * adj,
+                (seg.destination.y - seg.origin.y) * adj,
+                head_width=arrow_size, head_length=arrow_size,
+                fc='blue', ec='blue'
+            )
+            ax.text(
+                (seg.origin.x + seg.destination.x) / 2,
+                (seg.origin.y + seg.destination.y) / 2,
+                f"{seg.cost:.1f}",
+                color='black', fontsize=6
+            )
+
+    ax.grid(color='red', linestyle='dashed', linewidth=0.5)
+    ax.set_title(f"Segmentos entre {min_dist} y {max_dist} unidades")
+    plt.axis('auto')
+    plt.show()
