@@ -7,23 +7,23 @@ from graph import *
 from node import *
 from segment import*
 
-def LoadAirspace(name, place):
+def LoadAirspace(name):
     air = AirSpace(name)
-    F = open(place+"_nav.txt")
+    F = open(name+"_nav.txt")
     linea = F.readline()
     while linea != "":
         trozos = linea.rstrip().split(" ")
         air.points.append(NavPoint(trozos[0],trozos[1],trozos[2],trozos[3]))
         linea = F.readline()    #Lee la lines y el primer elemento es el numero identificativo, el nombre, la latitud y la longitud
     
-    F = open(place+"_seg.txt")
+    F = open(name+"_seg.txt")
     linea = F.readline()
     while linea != "":
         trozos = linea.rstrip().split(" ")
         air.segments.append(NavSegment(trozos[0],trozos[1],float(trozos[2])))
         linea = F.readline()    #Lee la lines y el primer elemento es origen, el destino y la distancia
 
-    F = open(place+"_aer.txt")
+    F = open(name+"_aer.txt")
     linea = F.readline()
     while linea != "":
         airport = NavAirport (linea.rstrip()) #Añade el nombre del aeropuerto
@@ -61,35 +61,37 @@ def ConversionGraph(airspace):
     
     return g
 
-def ExportToKML(g, filename): #Creamos un nuevo archivo con el nombre dado y se escriben todos los datos con el formato dado en atenea
-    F= open(filename+".kml","w")
+def ExportToKML(g, filename):
+    # Asegurarse de que el nombre del archivo termina en .kml
+    if not filename.endswith(".kml"):
+        filename += ".kml"
 
-    F.write("<?xml version='1.0' encoding='UTF-8'?>\n")
-    F.write("<kml xmlns='http://www.opengis.net/kml/2.2'>\n")
-    F.write("  <Document>\n")
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write("<?xml version='1.0' encoding='UTF-8'?>\n")
+        f.write("<kml xmlns='http://www.opengis.net/kml/2.2'>\n")
+        f.write("  <Document>\n")
 
-    for node in g.nodes:
-        F.write("    <Placemark>\n")
-        F.write(f"      <name>{node.name}</name>\n")
-        F.write("      <Point>\n")
-        F.write(f"        <coordinates>{node.x},{node.y},0</coordinates>\n")
-        F.write("      </Point>\n")
-        F.write("    </Placemark>\n")
+        for node in g.nodes:
+            f.write("    <Placemark>\n")
+            f.write(f"      <name>{node.name}</name>\n")
+            f.write("      <Point>\n")
+            f.write(f"        <coordinates>{node.x},{node.y},0</coordinates>\n")
+            f.write("      </Point>\n")
+            f.write("    </Placemark>\n")
 
-    for seg in g.segments:
-        F.write("    <Placemark>\n")
-        F.write(f"      <name>{seg.name}</name>\n")
-        F.write("      <LineString>\n")
-        F.write("        <tessellate>1</tessellate>\n")
-        F.write("        <coordinates>\n")
-        F.write(f"          {seg.origin.x},{seg.origin.y},0 {seg.destination.x},{seg.destination.y},0\n")
-        F.write("        </coordinates>\n")
-        F.write("      </LineString>\n")
-        F.write("    </Placemark>\n")
+        for seg in g.segments:
+            f.write("    <Placemark>\n")
+            f.write(f"      <name>{seg.name}</name>\n")
+            f.write("      <LineString>\n")
+            f.write("        <tessellate>1</tessellate>\n")
+            f.write("        <coordinates>\n")
+            f.write(f"          {seg.origin.x},{seg.origin.y},0 {seg.destination.x},{seg.destination.y},0\n")
+            f.write("        </coordinates>\n")
+            f.write("      </LineString>\n")
+            f.write("    </Placemark>\n")
 
-    F.write("  </Document>\n")
-    F.write("</kml>\n")
-    F.close()
+        f.write("  </Document>\n")
+        f.write("</kml>\n")
 
 def NodeToKML(g,nodename): #Crear un grafo con un nodo y sus vecinos
     nodeGraph = Graph(g.name+"_"+nodename)
