@@ -13,7 +13,7 @@ Versión 3 verificada por Joan Marrero
 Versión 3 comunicada por Marc C
 URL del video: https://youtu.be/owPJxdqHyeQ
 
-Versión 3 generada por Marc C
-Versión 3 verificada por Marc Jabalera
-Versión 3 comunicada por Joan Marrero
+Versión 4 generada por Marc C
+Versión 4 verificada por Marc Jabalera
+Versión 4 comunicada por Joan Marrero
 URL del video: https://youtu.be/5kJwb1VEVuA
